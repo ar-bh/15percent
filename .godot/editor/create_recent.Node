@@ -1,6 +1,9 @@
+Button
+RichTextLabel
+TextureRect
+ColorRect
 SubViewport
 SubViewportContainer
-TextureRect
 Control
 Sprite2D
 Parallax2D
