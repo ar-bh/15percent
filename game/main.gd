@@ -1,0 +1,20 @@
+extends Node2D
+
+@onready var background_texture1: TextureRect = $Background/Parallax2D/TextureRect
+@onready var background_texture2: TextureRect = $Background/Parallax2D/TextureRect2
+@onready var background_parallax: Parallax2D = $Background/Parallax2D
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	get_tree().root.size_changed.connect(_on_window_resized)
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+
+func _on_window_resized() -> void:
+	background_texture1.size = get_viewport_rect().size
+	background_texture2.size = get_viewport_rect().size
+	background_parallax.repeat_size = get_viewport_rect().size
