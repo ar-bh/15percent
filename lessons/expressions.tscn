@@ -70,33 +70,10 @@ offset_right = 609.0
 offset_bottom = 240.0
 metadata/_edit_group_ = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1311776750]
-layout_mode = 2
-
-[node name="ButtonSophia" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=116208241]
+[node name="RowBodies" type="HBoxContainer" parent="VBoxContainer" unique_id=1311776750]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Sophia"
 
-[node name="ButtonPink" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=1771452159]
+[node name="RowExpressions" type="HBoxContainer" parent="VBoxContainer" unique_id=847591840]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Pink"
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer" unique_id=847591840]
-layout_mode = 2
-
-[node name="ButtonRegular" type="Button" parent="VBoxContainer/HBoxContainer2" unique_id=2003256584]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Regular"
-
-[node name="ButtonSad" type="Button" parent="VBoxContainer/HBoxContainer2" unique_id=1918782863]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Sad"
-
-[node name="ButtonHappy" type="Button" parent="VBoxContainer/HBoxContainer2" unique_id=1737808292]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Happy"
