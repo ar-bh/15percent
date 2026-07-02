@@ -22,3 +22,6 @@ func _ready() -> void:
 	rich_text_label.text = lines
 	# Make sure to start the visible ratio at 0
 	# Create a tween, and grow the visible ratio to 1 over appearance_time
+	var tween := create_tween()
+	rich_text_label.visible_ratio = 0.0
+	tween.tween_property(rich_text_label, 'visible_ratio', 1.0, appearance_time)

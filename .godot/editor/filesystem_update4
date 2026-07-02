@@ -16,3 +16,7 @@ res://lessons/button_black.tres
 res://lessons/dialogue.gd
 res://practices/L5.P1.pick_correct_response/pick_correct_response.gd
 res://practices/L5.P2.text_slideshow/text_slideshow.gd
+res://practices/L6.P1.poetry/poetry.gd
+res://practices/L6.P2.typewriter/typewriter.gd
+res://practices/L6.P2.typewriter/typewriter.tscn
+res://practices/L6.P2.typewriter/assets/practice_exercises_theme.tres

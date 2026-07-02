@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bnly1gkbxw6b5" path="res://assets/bubble_pattern.png" id="2_v8wjx"]
 [ext_resource type="Texture2D" uid="uid://copkt78vgp37i" path="res://assets/sophia.png" id="3_1cblk"]
 [ext_resource type="Texture2D" uid="uid://d000xjtr4iqtk" path="res://assets/emotion_regular.png" id="4_rjqnu"]
+[ext_resource type="AudioStream" uid="uid://bafjgt7eu3x5a" path="res://assets/talking_synth.ogg" id="7_nggfo"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_v8wjx"]
 shader = ExtResource("1_fid5a")
@@ -48,7 +49,7 @@ texture = ExtResource("3_1cblk")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TextureRect" type="TextureRect" parent="Body" unique_id=1008760166]
+[node name="Expression" type="TextureRect" parent="Body" unique_id=1008760166]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -100,3 +101,7 @@ text = "previous"
 unique_name_in_owner = true
 layout_mode = 2
 text = "next"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1400851998]
+unique_name_in_owner = true
+stream = ExtResource("7_nggfo")

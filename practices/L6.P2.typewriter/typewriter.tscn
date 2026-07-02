@@ -1,13 +1,14 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://df1w3s8qns7x6"]
 
-[ext_resource type="Material" path="res://practices/L6.P2.typewriter/assets/practice_background_material.tres" id="1_ia7p2"]
-[ext_resource type="Theme" path="res://practices/L6.P2.typewriter/assets/practice_exercises_theme.tres" id="2_ib24g"]
-[ext_resource type="Script" path="res://practices/L6.P2.typewriter/typewriter.gd" id="3_v80jw"]
-[ext_resource type="AudioStream" path="res://practices/L6.P2.typewriter/assets/human_vel-002.wav" id="4_ioh4f"]
+[ext_resource type="Material" uid="uid://dmef1amrv175m" path="res://practices/L6.P2.typewriter/assets/practice_background_material.tres" id="1_ia7p2"]
+[ext_resource type="Theme" uid="uid://v0dvpkkl7lel" path="res://practices/L6.P2.typewriter/assets/practice_exercises_theme.tres" id="2_ib24g"]
+[ext_resource type="Script" uid="uid://ct0cak8g3sbr6" path="res://practices/L6.P2.typewriter/typewriter.gd" id="3_v80jw"]
+[ext_resource type="AudioStream" uid="uid://lediykc1phcl" path="res://practices/L6.P2.typewriter/assets/human_vel-002.wav" id="4_ioh4f"]
 
 [node name="Typewriter" type="ColorRect" unique_id=937284938]
 material = ExtResource("1_ia7p2")
 custom_minimum_size = Vector2(960, 540)
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
