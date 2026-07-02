@@ -47,6 +47,18 @@ func _ready() -> void:
 	previous_button.pressed.connect(previous)
 
 
+func slide_in() -> void:
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_QUART)
+	tween.set_ease(Tween.EASE_OUT)
+	
+	body.position.x = 200.0
+	tween.tween_property(body, "position:x", 0.0, 0.3)
+	body.modulate.a = 0.0
+	tween.parallel().tween_property(body, "modulate:a", 1.0, 0.2)
+
+
+
 func show_text() -> void:
 	var current_item := dialogue_items[current_item_index]
 	rich_text_label.text = current_item["text"]
@@ -61,14 +73,13 @@ func show_text() -> void:
 	audio_stream_player.play(sound_start_position)
 	tween.finished.connect(audio_stream_player.stop)
 	
-	
+	slide_in()
 	
 func advance() -> void:
 	move(1)
 	
 func previous() -> void:
 	move(-1)
-	
 	
 func move(amount) -> void:
 	current_item_index += amount
