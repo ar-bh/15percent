@@ -1,9 +1,11 @@
+Control
 Button
+VBoxContainer
 RichTextLabel
 TextureRect
+Parallax2D
+Polygon2D
 ColorRect
 SubViewport
 SubViewportContainer
-Control
 Sprite2D
-Parallax2D

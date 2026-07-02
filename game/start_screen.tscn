@@ -1,0 +1,114 @@
+[gd_scene format=3 uid="uid://cxxd6r1ll3gtf"]
+
+[ext_resource type="Script" uid="uid://bae4i6v88iyrb" path="res://game/start_screen.gd" id="1_66pef"]
+[ext_resource type="Texture2D" uid="uid://bbhkpw782ljwr" path="res://game_assets/startscreen_parallax.png" id="1_86ykt"]
+
+[node name="StartScreen" type="Control" unique_id=1678272508]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_66pef")
+
+[node name="Background" type="Control" parent="." unique_id=867975892]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Parallax2D" type="Parallax2D" parent="Background" unique_id=1769074662]
+scale = Vector2(0.49985036, 0.49985036)
+scroll_offset = Vector2(-15.999999, -2.9999998)
+repeat_size = Vector2(1920, 0)
+autoscroll = Vector2(100, 0)
+repeat_times = 4
+
+[node name="TextureRect" type="TextureRect" parent="Background/Parallax2D" unique_id=2125304568]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_86ykt")
+expand_mode = 1
+stretch_mode = 6
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect2" type="TextureRect" parent="Background/Parallax2D" unique_id=236432150]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2340.7007
+offset_top = 970.2904
+offset_right = 4260.7
+offset_bottom = 2050.2905
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.1058679, 1.1058679)
+texture = ExtResource("1_86ykt")
+expand_mode = 1
+stretch_mode = 6
+metadata/_edit_use_anchors_ = true
+
+[node name="Menu" type="Control" parent="." unique_id=7244021]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="RichTextLabel" parent="Menu" unique_id=857242134]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.549
+anchor_top = 0.367
+anchor_right = 0.549
+anchor_bottom = 0.367
+offset_left = -1114.0801
+offset_top = -396.36002
+offset_right = 808.9199
+offset_bottom = 287.63998
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 90
+theme_override_font_sizes/normal_font_size = 350
+bbcode_enabled = true
+text = "[center]15%[/center]"
+scroll_active = false
+
+[node name="ButtonContainer" type="VBoxContainer" parent="Menu" unique_id=1229546555]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -320.0
+offset_top = -51.0
+offset_right = 346.0
+offset_bottom = 383.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 40
+
+[node name="Start" type="Button" parent="Menu/ButtonContainer" unique_id=745847615]
+layout_mode = 2
+theme_override_font_sizes/font_size = 80
+text = "start"
+
+[node name="Options" type="Button" parent="Menu/ButtonContainer" unique_id=85479717]
+layout_mode = 2
+theme_override_font_sizes/font_size = 80
+text = "options"
+
+[node name="Quit" type="Button" parent="Menu/ButtonContainer" unique_id=328920845]
+layout_mode = 2
+theme_override_font_sizes/font_size = 80
+text = "quit"

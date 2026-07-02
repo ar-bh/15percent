@@ -1,0 +1,27 @@
+[gd_resource type="Theme" format=3 uid="uid://y7q3ug7p0lrx"]
+
+[ext_resource type="StyleBox" uid="uid://c2seyny82v5iw" path="res://lessons/button_black.tres" id="1_ei3wx"]
+[ext_resource type="StyleBox" uid="uid://c4igcba11ot5a" path="res://lessons/button_gray.tres" id="1_jktrv"]
+[ext_resource type="StyleBox" uid="uid://ku5eo3lqfjy" path="res://lessons/button_purple.tres" id="2_f1362"]
+[ext_resource type="StyleBox" uid="uid://cg857gfmeu5uv" path="res://lessons/button_orange.tres" id="2_ulena"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ei3wx"]
+content_margin_left = 48.0
+content_margin_top = 32.0
+content_margin_right = 48.0
+content_margin_bottom = 32.0
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+
+[resource]
+default_font_size = 48
+Button/styles/disabled = ExtResource("1_jktrv")
+Button/styles/focus = ExtResource("2_f1362")
+Button/styles/hover = ExtResource("2_ulena")
+Button/styles/normal = ExtResource("1_ei3wx")
+Button/styles/pressed = ExtResource("2_ulena")
+RichTextLabel/colors/default_color = Color(0, 0, 0, 1)
+RichTextLabel/styles/normal = SubResource("StyleBoxFlat_ei3wx")
