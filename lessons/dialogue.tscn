@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://chprvwfixox2y"]
+[gd_scene format=3 uid="uid://chprvwfixox2y"]
 
 [ext_resource type="Theme" uid="uid://cshg3sgf0xxq" path="res://assets/main_theme.tres" id="1_nggfo"]
 [ext_resource type="Script" uid="uid://c673ndsi3esbr" path="res://lessons/dialogue.gd" id="2_n1q1t"]
@@ -15,13 +15,7 @@ shader_parameter/bg_color = Color(0.980392, 0.94902, 0.72549, 1)
 shader_parameter/pattern_color = Color(0.996078, 0.878431, 0.564706, 1)
 shader_parameter/pattern_size = 256.0
 
-[sub_resource type="InputEventAction" id="InputEventAction_3rk3v"]
-action = &"advance_text"
-
-[sub_resource type="Shortcut" id="Shortcut_7vboy"]
-events = [SubResource("InputEventAction_3rk3v")]
-
-[node name="Dialogue" type="Control"]
+[node name="Dialogue" type="Control" unique_id=143541109]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -31,7 +25,7 @@ grow_vertical = 2
 theme = ExtResource("1_nggfo")
 script = ExtResource("2_n1q1t")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=1018078083]
 material = SubResource("ShaderMaterial_efgpg")
 layout_mode = 1
 anchors_preset = 15
@@ -40,7 +34,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Body" type="TextureRect" parent="."]
+[node name="Body" type="TextureRect" parent="." unique_id=44349559]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
@@ -53,7 +47,7 @@ texture = ExtResource("5_g5y1a")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Expression" type="TextureRect" parent="Body"]
+[node name="Expression" type="TextureRect" parent="Body" unique_id=1767965571]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -65,39 +59,45 @@ texture = ExtResource("6_bayqr")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
-unique_name_in_owner = true
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1483708294]
+clip_contents = true
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.75
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -360.32
-offset_top = 440.0
+offset_left = -360.32007
+offset_top = 145.0
 offset_right = -176.0
-offset_bottom = -519.0
+offset_bottom = -140.0
+focus_mode = 3
+mouse_filter = 0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer" unique_id=852971848]
+unique_name_in_owner = true
+layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 2
 bbcode_enabled = true
 text = "Hello World"
 fit_content = true
 
-[node name="NextButton" type="Button" parent="."]
+[node name="ActionButtonsVBoxContainer" type="VBoxContainer" parent="VBoxContainer" unique_id=1237068085]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -198.0
-offset_top = -107.0
-offset_right = -24.0
-offset_bottom = -20.0
-grow_horizontal = 0
-grow_vertical = 0
-shortcut = SubResource("Shortcut_7vboy")
-text = "next"
+layout_mode = 2
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="Button" type="Button" parent="VBoxContainer/ActionButtonsVBoxContainer" unique_id=867700741]
+layout_mode = 2
+text = "Test Button"
+
+[node name="Button2" type="Button" parent="VBoxContainer/ActionButtonsVBoxContainer" unique_id=1784960757]
+layout_mode = 2
+text = "Test Button"
+
+[node name="Button3" type="Button" parent="VBoxContainer/ActionButtonsVBoxContainer" unique_id=918059880]
+layout_mode = 2
+text = "Test Button"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1404991951]
 unique_name_in_owner = true
 stream = ExtResource("7_1fga6")
