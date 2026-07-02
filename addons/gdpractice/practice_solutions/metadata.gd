@@ -4,38 +4,23 @@ extends "res://addons/gdpractice/metadata.gd"
 func _init() -> void:
 	list += [
 		PracticeMetadata.new(
-			"07_telling_a_story_010_pick_correct_response",
-			"Pick the Correct Response",
-			preload ("L5.P1.pick_correct_response/pick_correct_response.tscn")
+			"03_interesting_choices_01_populate_inventory",
+			"Fill the Inventory",
+			preload("L4.P1.populate_inventory/populate_inventory.tscn")
 		),
 		PracticeMetadata.new(
-			"07_telling_a_story_020_text_slideshow",
-			"Text Slideshow",
-			preload ("L5.P2.text_slideshow/text_slideshow.tscn")
+			"03_interesting_choices_02_function_bind",
+			"Equipping an Item",
+			preload("L4.P2.equip_item/equip_item.tscn")
 		),
 		PracticeMetadata.new(
-			"07_telling_a_story_030_poetry",
-			"A Poem About Becoming a Gamedev",
-			preload ("L6.P1.poetry/poetry.tscn")
+			"04_stronger_guarantees_01_dict_to_resource",
+			"Shopping for Items",
+			preload("L5.P1.shopping_loot/shopping_loot.tscn")
 		),
 		PracticeMetadata.new(
-			"07_telling_a_story_040_typewriter",
-			"A Typewritten Poem About Becoming a Gamedev",
-			preload ("L6.P2.typewriter/typewriter.tscn")
-		),
-		PracticeMetadata.new(
-			"07_telling_a_story_050_pick_your_character",
-			"Picking Your Character",
-			preload ("L8.P1.pick_your_character/pick_your_character.tscn")
-		),
-		PracticeMetadata.new(
-			"07_telling_a_story_060_image_slideshow",
-			"Images Slideshow",
-			preload ("L10.P1.image_slideshow/image_slideshow.tscn")
-		),
-		PracticeMetadata.new(
-			"07_telling_a_story_070_party_members_menu",
-			"Party Members Menu",
-			preload ("L10.P2.party_members/party_members.tscn")
+			"05_stronger_choices_01_powerups",
+			"Powered up items",
+			preload("res://addons/gdpractice/practice_solutions/L6.P1.powered_inventory/powered_inventory.tscn")
 		),
 	]

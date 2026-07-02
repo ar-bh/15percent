@@ -22,7 +22,7 @@ config/icon="res://icon_telling_a_story.png"
 [autoload]
 
 UITestPanel="*uid://bnnxfl3thl8qk"
-Metadata="*uid://cn3306suumr21"
+Metadata="*uid://bbm5u5bp50262"
 
 [display]
 
