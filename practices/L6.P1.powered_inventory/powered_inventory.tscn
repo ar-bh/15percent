@@ -1,9 +1,11 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://d0j2di7rbijx"]
 
-[ext_resource type="Shader" path="res://assets/sliding_background.gdshader" id="1_rra8b"]
-[ext_resource type="Texture2D" path="res://assets/bubble_pattern.png" id="2_u5mi4"]
-[ext_resource type="Script" path="res://practices/L6.P1.powered_inventory/powered_inventory.gd" id="3_tv2rc"]
-[ext_resource type="Theme" path="res://assets/practices/practices_theme.tres" id="4_lnplv"]
+[ext_resource type="Shader" uid="uid://dm7717xxg836f" path="res://assets/sliding_background.gdshader" id="1_rra8b"]
+[ext_resource type="Texture2D" uid="uid://bnly1gkbxw6b5" path="res://assets/bubble_pattern.png" id="2_u5mi4"]
+[ext_resource type="Script" uid="uid://w05juy26dy5u" path="res://practices/L6.P1.powered_inventory/powered_inventory.gd" id="3_rra8b"]
+[ext_resource type="Theme" uid="uid://qk3rjf73qo8w" path="res://assets/practices/practices_theme.tres" id="4_lnplv"]
+[ext_resource type="Script" uid="uid://cx57j617cw0r1" path="res://practices/L6.P1.powered_inventory/powered_item.gd" id="4_u5mi4"]
+[ext_resource type="Script" uid="uid://vrr8y0nsk8ak" path="res://practices/L6.P1.powered_inventory/power.gd" id="5_tv2rc"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_p0ea8"]
 shader = ExtResource("1_rra8b")
@@ -12,15 +14,33 @@ shader_parameter/bg_color = Color(0.537824, 0.0789613, 0.817605, 1)
 shader_parameter/pattern_color = Color(0.467561, 0.0634301, 0.715504, 1)
 shader_parameter/pattern_size = 256.0
 
-[node name="PoweredInventory" type="ColorRect" unique_id=1555342262]
+[sub_resource type="Resource" id="Resource_lnplv"]
+script = ExtResource("4_u5mi4")
+text = "e"
+metadata/_custom_type_script = "uid://cx57j617cw0r1"
+
+[sub_resource type="Resource" id="Resource_svwn0"]
+script = ExtResource("4_u5mi4")
+text = "a"
+metadata/_custom_type_script = "uid://cx57j617cw0r1"
+
+[sub_resource type="Resource" id="Resource_fv7gs"]
+script = ExtResource("4_u5mi4")
+text = "x"
+price = 144444
+metadata/_custom_type_script = "uid://cx57j617cw0r1"
+
+[node name="PoweredInventory" type="ColorRect" unique_id=2105328934]
 material = SubResource("ShaderMaterial_p0ea8")
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("3_tv2rc")
+script = ExtResource("3_rra8b")
+items_list = Array[ExtResource("4_u5mi4")]([SubResource("Resource_lnplv"), SubResource("Resource_svwn0"), SubResource("Resource_fv7gs")])
 
-[node name="CenterContainer" type="CenterContainer" parent="." unique_id=409649466]
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=67187866]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,23 +49,23 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("4_lnplv")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=1557384295]
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=220644339]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=1316173072]
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=769875987]
 layout_mode = 2
 
-[node name="GridContainer" type="GridContainer" parent="CenterContainer/VBoxContainer/HBoxContainer" unique_id=936261011]
+[node name="GridContainer" type="GridContainer" parent="CenterContainer/VBoxContainer/HBoxContainer" unique_id=1115293090]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(324, 384)
 layout_mode = 2
 columns = 2
 
-[node name="Panel" type="Panel" parent="CenterContainer/VBoxContainer/HBoxContainer" unique_id=450469534]
+[node name="Panel" type="Panel" parent="CenterContainer/VBoxContainer/HBoxContainer" unique_id=1910459292]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="CenterContainer/VBoxContainer/HBoxContainer/Panel" unique_id=1755976503]
+[node name="TextureRect" type="TextureRect" parent="CenterContainer/VBoxContainer/HBoxContainer/Panel" unique_id=464348366]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -56,7 +76,7 @@ grow_vertical = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/Panel" unique_id=1637703601]
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/Panel" unique_id=1811867844]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 10
@@ -67,7 +87,7 @@ text = "Name"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="CenterContainer/VBoxContainer/HBoxContainer/Panel" unique_id=1625609920]
+[node name="Button" type="Button" parent="CenterContainer/VBoxContainer/HBoxContainer/Panel" unique_id=53841555]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -82,12 +102,12 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "buy"
 
-[node name="PowerupsVBoxContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer" unique_id=906936409]
+[node name="PowerupsVBoxContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer" unique_id=2093765618]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CenterContainer/VBoxContainer" unique_id=1528633320]
+[node name="RichTextLabel" type="RichTextLabel" parent="CenterContainer/VBoxContainer" unique_id=107224184]
 layout_mode = 2
 focus_mode = 2
 theme_type_variation = &"SmallText"
