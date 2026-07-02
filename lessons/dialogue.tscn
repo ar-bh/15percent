@@ -85,6 +85,7 @@ offset_right = -161.0
 offset_bottom = -525.0
 grow_horizontal = 2
 theme = ExtResource("1_5dtme")
+bbcode_enabled = true
 text = "Hello World!"
 fit_content = true
 
