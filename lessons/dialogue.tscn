@@ -40,15 +40,9 @@ choices = Array[ExtResource("5_ujubm")]([SubResource("Resource_1f3kq")])
 text = "nah it was a test of character, you die now."
 metadata/_custom_type_script = "uid://dtfhojk2xqbqb"
 
-[sub_resource type="Resource" id="Resource_5rpy8"]
-script = ExtResource("5_ujubm")
-text = "thanks"
-is_quit = true
-metadata/_custom_type_script = "uid://c0ukuwski3dgh"
-
 [sub_resource type="Resource" id="Resource_ifs2s"]
 script = ExtResource("3_xlxck")
-choices = Array[ExtResource("5_ujubm")]([SubResource("Resource_5rpy8")])
+choices = Array[ExtResource("5_ujubm")]([null])
 text = "You passed the test, you are spared"
 metadata/_custom_type_script = "uid://dtfhojk2xqbqb"
 
