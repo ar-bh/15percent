@@ -1,8 +1,8 @@
-AudioStreamPlayer
-HBoxContainer
-Control
 Button
+HBoxContainer
 VBoxContainer
+AudioStreamPlayer
+Control
 RichTextLabel
 TextureRect
 Parallax2D

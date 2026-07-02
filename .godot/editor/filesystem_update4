@@ -20,3 +20,5 @@ res://practices/L6.P1.poetry/poetry.gd
 res://practices/L6.P2.typewriter/typewriter.gd
 res://practices/L6.P2.typewriter/typewriter.tscn
 res://practices/L6.P2.typewriter/assets/practice_exercises_theme.tres
+res://lessons/expressions.tscn
+res://lessons/expressions.gd
