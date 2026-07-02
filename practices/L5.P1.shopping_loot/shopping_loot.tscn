@@ -1,16 +1,40 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://fpyjma8i1ht8"]
 
-[ext_resource type="Material" path="res://assets/practice_background_material.tres" id="1_uom0d"]
-[ext_resource type="Script" path="res://practices/L5.P1.shopping_loot/shopping_loot.gd" id="2_kdtyb"]
-[ext_resource type="Theme" path="res://assets/practices/practices_theme.tres" id="3_pf4w2"]
+[ext_resource type="Material" uid="uid://dxrtaju87p2an" path="res://assets/practice_background_material.tres" id="1_uom0d"]
+[ext_resource type="Script" uid="uid://ci1s0hl0yterw" path="res://practices/L5.P1.shopping_loot/shopping_loot.gd" id="2_kdtyb"]
+[ext_resource type="Script" uid="uid://cdp2wl66fq1mr" path="res://practices/L5.P1.shopping_loot/shopping_entry.gd" id="3_kdtyb"]
+[ext_resource type="Theme" uid="uid://qk3rjf73qo8w" path="res://assets/practices/practices_theme.tres" id="3_pf4w2"]
+
+[sub_resource type="Resource" id="Resource_pf4w2"]
+script = ExtResource("3_kdtyb")
+text = "xbox"
+amount = 1
+price = 301
+metadata/_custom_type_script = "uid://cdp2wl66fq1mr"
+
+[sub_resource type="Resource" id="Resource_ikuku"]
+script = ExtResource("3_kdtyb")
+text = "bannas"
+amount = 156
+price = 1
+metadata/_custom_type_script = "uid://cdp2wl66fq1mr"
+
+[sub_resource type="Resource" id="Resource_xvvld"]
+script = ExtResource("3_kdtyb")
+text = "playstation"
+amount = 40814
+price = -1481984
+metadata/_custom_type_script = "uid://cdp2wl66fq1mr"
 
 [node name="ShoppingLoot" type="ColorRect" unique_id=1851894790]
 material = ExtResource("1_uom0d")
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_kdtyb")
+items_list = Array[ExtResource("3_kdtyb")]([SubResource("Resource_pf4w2"), SubResource("Resource_ikuku"), SubResource("Resource_xvvld")])
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=1374182485]
 layout_mode = 1

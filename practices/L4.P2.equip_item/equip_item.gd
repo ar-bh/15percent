@@ -29,6 +29,7 @@ func _ready() -> void:
 		button.text = item_name
 		grid_container.add_child(button)
 		# Connect the button here. Don't forget to use .bind()!
+		button.pressed.connect(display_item.bind(item_name))
 
 
 # Displays an item. The text parameter is the name of the item.
