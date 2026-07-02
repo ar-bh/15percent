@@ -25,3 +25,7 @@ res://lessons/expressions.gd
 res://practices/L8.P1.pick_your_character/pick_your_character.gd
 res://practices/L8.P1.pick_your_character/pick_your_character.tscn
 res://practices/L8.P1.pick_your_character/assets/practice_exercises_theme.tres
+res://practices/L10.P1.image_slideshow/image_slideshow.gd
+res://practices/L10.P1.image_slideshow/image_slideshow.tscn
+res://practices/L10.P1.image_slideshow/assets/practice_exercises_theme.tres
+res://practices/L10.P2.party_members/party_members.gd

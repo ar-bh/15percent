@@ -1,13 +1,14 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://weg3ydem8423"]
 
-[ext_resource type="Material" path="res://practices/L10.P1.image_slideshow/assets/practice_background_material.tres" id="1_hm8r0"]
-[ext_resource type="Theme" path="res://practices/L10.P1.image_slideshow/assets/practice_exercises_theme.tres" id="2_amxuu"]
-[ext_resource type="Script" path="res://practices/L10.P1.image_slideshow/image_slideshow.gd" id="3_254ed"]
+[ext_resource type="Material" uid="uid://bh6iut4pkigwe" path="res://practices/L10.P1.image_slideshow/assets/practice_background_material.tres" id="1_hm8r0"]
+[ext_resource type="Theme" uid="uid://dfvhb11alilgu" path="res://practices/L10.P1.image_slideshow/assets/practice_exercises_theme.tres" id="2_amxuu"]
+[ext_resource type="Script" uid="uid://c5ii6ec644j78" path="res://practices/L10.P1.image_slideshow/image_slideshow.gd" id="3_254ed"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_lh885"]
 
 [node name="ImageSlideshow" type="ColorRect" unique_id=896604738]
 material = ExtResource("1_hm8r0")
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
