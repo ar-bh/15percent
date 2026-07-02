@@ -2,6 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://y7q3ug7p0lrx" path="res://lessons/main_theme.tres" id="1_5dtme"]
 [ext_resource type="Shader" uid="uid://cs15e2hgd2lan" path="res://assets/sliding_background.gdshader" id="1_fid5a"]
+[ext_resource type="Script" uid="uid://c4bk2me3kh442" path="res://lessons/dialogue.gd" id="2_6cfwb"]
 [ext_resource type="Texture2D" uid="uid://bnly1gkbxw6b5" path="res://assets/bubble_pattern.png" id="2_v8wjx"]
 [ext_resource type="Texture2D" uid="uid://copkt78vgp37i" path="res://assets/sophia.png" id="3_1cblk"]
 [ext_resource type="Texture2D" uid="uid://d000xjtr4iqtk" path="res://assets/emotion_regular.png" id="4_rjqnu"]
@@ -21,6 +22,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_5dtme")
+script = ExtResource("2_6cfwb")
 metadata/_edit_use_anchors_ = true
 
 [node name="Background" type="ColorRect" parent="." unique_id=1096656663]
@@ -62,6 +64,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=1937681798]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -76,17 +79,24 @@ theme = ExtResource("1_5dtme")
 text = "Hello World!"
 fit_content = true
 
-[node name="NextButton" type="Button" parent="." unique_id=1769350111]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=186484837]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -67.0
-offset_top = -55.0
-offset_right = -24.0
-offset_bottom = -24.0
+offset_left = -148.0
+offset_top = -100.0
 grow_horizontal = 0
 grow_vertical = 0
+
+[node name="PreviousButton" type="Button" parent="HBoxContainer" unique_id=1857329371]
+unique_name_in_owner = true
+layout_mode = 2
+text = "previous"
+
+[node name="NextButton" type="Button" parent="HBoxContainer" unique_id=1769350111]
+unique_name_in_owner = true
+layout_mode = 2
 text = "next"
