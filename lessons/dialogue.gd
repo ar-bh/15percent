@@ -10,31 +10,71 @@ extends Control
 @onready var body: TextureRect = %Body
 @onready var expression: TextureRect = %Expression
 
+var bodies := {
+	"sophia": preload("res://assets/sophia.png"),
+	"pink": preload("res://assets/pink.png"),
+}
+
 var expressions := {
 	"happy": preload("res://assets/emotion_happy.png"),
 	"regular": preload ("res://assets/emotion_regular.png"),
 	"sad": preload ("res://assets/emotion_sad.png"),
 }
 
+var audios := {
+	"sophia": preload("res://assets/talking_synth.ogg"),
+	"pink": preload("res://assets/talking_synth_alternate.ogg"),
+}
 
-var dialogue_items : Array[Dictionary] = [
+var dialogue_items: Array[Dictionary] = [
 	{
 		"expression": expressions["regular"],
-		"text": "I finally joined stardance challenge hackathon",
+		"text": "I've been studying arrays and dictionaries lately.",
+		"character": bodies["sophia"],
+		"voice": audios["sophia"],
+	},
+	{
+		"expression": expressions["regular"],
+		"text": "Oh, nice. How has it been going?",
+		"character": bodies["pink"],
+		"voice": audios["pink"],
 	},
 	{
 		"expression": expressions["sad"],
-		"text": "I joined a little late though",
+		"text": "Well... it's a little complicated!",
+		"character": bodies["sophia"],
+		"voice": audios["sophia"],
+	},
+	{
+		"expression": expressions["sad"],
+		"text": "Oh!",
+		"character": bodies["pink"],
+		"voice": audios["pink"],
+	},
+	{
+		"expression": expressions["regular"],
+		"text": "It sure takes time to click at first.",
+		"character": bodies["pink"],
+		"voice": audios["pink"],
 	},
 	{
 		"expression": expressions["happy"],
-		"text": "But I will clutch"
+		"text": "If you keep at it, eventually, you'll get the hang of it!",
+		"character": bodies["pink"],
+		"voice": audios["pink"],
+	},
+	{
+		"expression": expressions["regular"],
+		"text": "Mhhh... I see. I'll keep at it, then.",
+		"character": bodies["sophia"],
+		"voice": audios["sophia"],
 	},
 	{
 		"expression": expressions["happy"],
-		"text": "And win all the prizes"
+		"text": "Thanks for the encouragement. Time to LEARN!!!",
+		"character": bodies["sophia"],
+		"voice": audios["sophia"]
 	},
-
 ]
 var current_item_index := 0
 
@@ -63,10 +103,12 @@ func show_text() -> void:
 	var current_item := dialogue_items[current_item_index]
 	rich_text_label.text = current_item["text"]
 	expression.texture = current_item["expression"]
+	body.texture = current_item["character"]
+	audio_stream_player.stream = current_item["voice"]
 	
 	rich_text_label.visible_ratio = 0.0
 	var tween = create_tween()
-	var text_appearing_duration: float = current_item["text"].length() / 20.0
+	var text_appearing_duration: float = current_item["text"].length() / 30.0
 	tween.tween_property(rich_text_label,'visible_ratio', 1.0, text_appearing_duration)
 	var sound_max_offset := audio_stream_player.stream.get_length() - text_appearing_duration
 	var sound_start_position := randf() * sound_max_offset
