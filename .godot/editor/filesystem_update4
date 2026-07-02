@@ -22,3 +22,6 @@ res://practices/L6.P2.typewriter/typewriter.tscn
 res://practices/L6.P2.typewriter/assets/practice_exercises_theme.tres
 res://lessons/expressions.tscn
 res://lessons/expressions.gd
+res://practices/L8.P1.pick_your_character/pick_your_character.gd
+res://practices/L8.P1.pick_your_character/pick_your_character.tscn
+res://practices/L8.P1.pick_your_character/assets/practice_exercises_theme.tres

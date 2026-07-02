@@ -18,3 +18,11 @@ func _ready() -> void:
 			texture_rect.texture = character_choices["dani"]
 	)
 	# Make the Gobot and Nova buttons work by adding code below.
+	button_gobot.pressed.connect(
+		func() -> void:
+			texture_rect.texture = character_choices["gobot"]
+	)
+	button_nova.pressed.connect(
+		func() -> void:
+			texture_rect.texture = character_choices["nova"]
+	)
