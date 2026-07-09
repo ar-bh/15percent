@@ -4,23 +4,23 @@ extends "res://addons/gdpractice/metadata.gd"
 func _init() -> void:
 	list += [
 		PracticeMetadata.new(
-			"03_interesting_choices_01_populate_inventory",
-			"Fill the Inventory",
-			preload("L4.P1.populate_inventory/populate_inventory.tscn")
+			"09_top_down_movement_010_asteroid_field",
+			"The Asteroid Field",
+			preload("L2.P1.asteroid_field/asteroid_field.tscn")
 		),
 		PracticeMetadata.new(
-			"03_interesting_choices_02_function_bind",
-			"Equipping an Item",
-			preload("L4.P2.equip_item/equip_item.tscn")
+			"09_top_down_movement_020_bumping_in_walls",
+			"Bumping in Walls",
+			preload("L4.P1.bumping_in_wall/bumping_in_walls.tscn")
 		),
 		PracticeMetadata.new(
-			"04_stronger_guarantees_01_dict_to_resource",
-			"Shopping for Items",
-			preload("L5.P1.shopping_loot/shopping_loot.tscn")
+			"09_top_down_movement_030_smooth_game",
+			"Smooth Game",
+			preload("L5.P1.smooth_game/smooth_game.tscn")
 		),
 		PracticeMetadata.new(
-			"05_stronger_choices_01_powerups",
-			"Powered up items",
-			preload("res://addons/gdpractice/practice_solutions/L6.P1.powered_inventory/powered_inventory.tscn")
-		),
+			"09_top_down_movement_040_move_to_mouse",
+			"Move to Mouse",
+			preload("L8.P1.move_to_mouse/move_to_mouse.tscn")
+		)
 	]

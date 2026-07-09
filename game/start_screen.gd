@@ -8,7 +8,7 @@ extends Control
 
 #region buttons
 @onready var start_button: Button = $Menu/ButtonContainer/Start
-@onready var options_button: Button = $Menu/ButtonContainer/Options
+@onready var options_button: Button = $Menu/ButtonContainer/Help
 @onready var quit_button: Button = $Menu/ButtonContainer/Quit
 #endregion
 

@@ -103,7 +103,7 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 80
 text = "start"
 
-[node name="Options" type="Button" parent="Menu/ButtonContainer" unique_id=85479717]
+[node name="Help" type="Button" parent="Menu/ButtonContainer" unique_id=85479717]
 layout_mode = 2
 theme_override_font_sizes/font_size = 80
 text = "options"
@@ -112,3 +112,8 @@ text = "options"
 layout_mode = 2
 theme_override_font_sizes/font_size = 80
 text = "quit"
+
+[node name="Panel" type="Panel" parent="." unique_id=1855557524]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
