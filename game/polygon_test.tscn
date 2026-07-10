@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://7es453epua6j"]
+
+[ext_resource type="Script" uid="uid://dao5p86xpyucp" path="res://polygon_test.gd" id="1_6eqgx"]
+
+[node name="PolygonTest" type="Node2D" unique_id=1188261488]
+script = ExtResource("1_6eqgx")
+
+[node name="IncreaseSideButton" type="Button" parent="." unique_id=2017298442]
+unique_name_in_owner = true
+offset_left = 918.0
+offset_top = 59.0
+offset_right = 1420.0
+offset_bottom = 255.0
+theme_override_font_sizes/font_size = 80
+text = "+1 side"
+
+[node name="DecreaseSideButton" type="Button" parent="." unique_id=236693969]
+unique_name_in_owner = true
+offset_left = 304.0
+offset_top = 61.0
+offset_right = 806.0
+offset_bottom = 257.0
+theme_override_font_sizes/font_size = 80
+text = "-1 side"
