@@ -15,7 +15,6 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="15percent"
-run/main_scene="uid://doyrtam6ghdgc"
 config/features=PackedStringArray("4.6")
 config/icon="res://icon_telling_a_story.png"
 
