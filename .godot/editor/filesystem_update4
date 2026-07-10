@@ -22,3 +22,7 @@ res://lessons/bouncer.tscn
 res://lessons/bouncer.gd
 res://lessons/raycast_test.tscn
 res://lessons/ray_cast_2d.gd
+res://game/main.tscn
+res://game/main_gameplay.tscn
+res://game/test_gameplay.tscn
+res://game/test_gameplay.gd

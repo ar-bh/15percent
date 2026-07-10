@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://bk5ax445xp33d"]
+
+[ext_resource type="Script" uid="uid://bkdplvjk0qja3" path="res://game/test_gameplay.gd" id="1_7xsnm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7xsnm"]
+size = Vector2(1184, 832)
+
+[node name="TestGameplay" type="Node2D" unique_id=922722316]
+script = ExtResource("1_7xsnm")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=2093030324]
+offset_left = 416.0
+offset_top = 96.0
+offset_right = 1600.0
+offset_bottom = 928.0
+
+[node name="HitBox" type="Area2D" parent="." unique_id=884496287]
+unique_name_in_owner = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox" unique_id=29500416]
+position = Vector2(1008, 512)
+shape = SubResource("RectangleShape2D_7xsnm")

@@ -25,7 +25,7 @@ func _process(delta: float) -> void:
 	pass
 
 func _on_start_pressed() -> void:
-	get_tree().change_scene_to_file('res://game/main.tscn')
+	get_tree().change_scene_to_file('res://game/main_gameplay.tscn')
 	
 func _on_options_pressed() -> void:
 	pass

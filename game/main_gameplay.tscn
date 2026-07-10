@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://dk6awpqa6f2dq"]
 
-[ext_resource type="Script" uid="uid://cy7o7yxebu8j3" path="res://game/main.gd" id="1_xtpaf"]
-[ext_resource type="Texture2D" uid="uid://dg3h0vrg0pkdw" path="res://game_assets/x_parallax.png" id="2_xtpaf"]
+[ext_resource type="Script" uid="uid://cy7o7yxebu8j3" path="res://game/main.gd" id="1_8fjku"]
+[ext_resource type="Texture2D" uid="uid://dg3h0vrg0pkdw" path="res://game_assets/x_parallax.png" id="2_v8vcv"]
 
-[node name="Main" type="Node2D" unique_id=29669865]
-script = ExtResource("1_xtpaf")
+[node name="MainGameplay" type="Node2D" unique_id=29669865]
+script = ExtResource("1_8fjku")
 
 [node name="Background" type="Control" parent="." unique_id=1560236750]
 layout_mode = 3
@@ -29,7 +29,7 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_xtpaf")
+texture = ExtResource("2_v8vcv")
 expand_mode = 1
 stretch_mode = 6
 metadata/_edit_use_anchors_ = true
@@ -44,7 +44,7 @@ offset_right = 4400.742
 offset_bottom = 2158.3228
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_xtpaf")
+texture = ExtResource("2_v8vcv")
 expand_mode = 1
 stretch_mode = 6
 metadata/_edit_use_anchors_ = true
