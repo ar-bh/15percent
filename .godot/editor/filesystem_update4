@@ -31,3 +31,4 @@ res://polygon_test.gd
 res://game/gameplay_shapes.tscn
 res://game/main.gd
 res://game/gameplay_shapes.gd
+res://game_assets/group_outline.gdshader

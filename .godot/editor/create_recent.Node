@@ -1,6 +1,8 @@
+CanvasGroup
+Polygon2D
+TextureRect
 Button
 Line2D
-Polygon2D
 Timer
 ColorRect
 CollisionShape2D
@@ -11,4 +13,3 @@ Node2D
 Node
 VBoxContainer
 CenterContainer
-PanelContainer

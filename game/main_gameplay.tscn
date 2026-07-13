@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://dk6awpqa6f2dq"]
 
 [ext_resource type="Script" uid="uid://cy7o7yxebu8j3" path="res://game/main.gd" id="1_8fjku"]
-[ext_resource type="Texture2D" uid="uid://dg3h0vrg0pkdw" path="res://game_assets/x_parallax.png" id="2_v8vcv"]
+[ext_resource type="Texture2D" uid="uid://dke3dqetuekil" path="res://game_assets/themes/regular_background.png" id="2_8fjku"]
+[ext_resource type="PackedScene" uid="uid://bk5ax445xp33d" path="res://game/gameplay_shapes.tscn" id="3_v8vcv"]
 
 [node name="MainGameplay" type="Node2D" unique_id=29669865]
 script = ExtResource("1_8fjku")
@@ -17,35 +18,15 @@ grow_vertical = 2
 
 [node name="Parallax2D" type="Parallax2D" parent="Background" unique_id=1881809926]
 scale = Vector2(0.49985036, 0.49985036)
-scroll_offset = Vector2(-15.999999, -2.9999998)
-repeat_size = Vector2(1920, 0)
-autoscroll = Vector2(100, 0)
+scroll_offset = Vector2(2125.9998, 1.9999998)
+repeat_size = Vector2(2165, 1080)
+autoscroll = Vector2(25, 100)
 repeat_times = 4
 
-[node name="TextureRect" type="TextureRect" parent="Background/Parallax2D" unique_id=213676304]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 1920.0
-offset_bottom = 1080.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_v8vcv")
-expand_mode = 1
-stretch_mode = 6
-metadata/_edit_use_anchors_ = true
+[node name="TextureRect" type="TextureRect" parent="Background/Parallax2D" unique_id=1111289857]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_8fjku")
+stretch_mode = 5
 
-[node name="TextureRect2" type="TextureRect" parent="Background/Parallax2D" unique_id=55474868]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 2480.7424
-offset_top = 1078.3228
-offset_right = 4400.742
-offset_bottom = 2158.3228
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_v8vcv")
-expand_mode = 1
-stretch_mode = 6
-metadata/_edit_use_anchors_ = true
+[node name="GameplayShapes" parent="." unique_id=922722316 instance=ExtResource("3_v8vcv")]

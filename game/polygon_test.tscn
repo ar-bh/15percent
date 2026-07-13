@@ -1,6 +1,13 @@
 [gd_scene format=3 uid="uid://7es453epua6j"]
 
 [ext_resource type="Script" uid="uid://dao5p86xpyucp" path="res://polygon_test.gd" id="1_6eqgx"]
+[ext_resource type="Shader" uid="uid://b7swh3cpb8wdv" path="res://game_assets/group_outline.gdshader" id="2_wo0rm"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pqj2c"]
+shader = ExtResource("2_wo0rm")
+shader_parameter/line_color = Color(0, 0, 0, 1)
+shader_parameter/line_thickness = 4.0
+shader_parameter/viewport_scale = Vector2(1, 1)
 
 [node name="PolygonTest" type="Node2D" unique_id=1188261488]
 script = ExtResource("1_6eqgx")
@@ -22,3 +29,7 @@ offset_right = 806.0
 offset_bottom = 257.0
 theme_override_font_sizes/font_size = 80
 text = "-1 side"
+
+[node name="Polygon2D" type="Polygon2D" parent="." unique_id=562193122]
+material = SubResource("ShaderMaterial_pqj2c")
+polygon = PackedVector2Array(606, 553, 322, 643, 612, 949, 1681, 781, 1697, 479, 730, 351)
