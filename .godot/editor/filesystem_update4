@@ -28,3 +28,6 @@ res://game/test_gameplay.tscn
 res://game/test_gameplay.gd
 res://game/polygon_test.tscn
 res://polygon_test.gd
+res://game/gameplay_shapes.tscn
+res://game/main.gd
+res://game/gameplay_shapes.gd

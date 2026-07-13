@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://bk5ax445xp33d"]
+
+[ext_resource type="Script" uid="uid://bkdplvjk0qja3" path="res://game/gameplay_shapes.gd" id="1_0ui45"]
+
+[node name="GameplayShapes" type="Node2D" unique_id=922722316]
+position = Vector2(0, 16)
+script = ExtResource("1_0ui45")
+
+[node name="CutTimer" type="Timer" parent="." unique_id=1344935262]
+unique_name_in_owner = true
+wait_time = 0.5
+one_shot = true
+
+[node name="TimerLabel" type="Label" parent="." unique_id=1982736451]
+unique_name_in_owner = true
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 400.0
+offset_bottom = 200.0
+theme_override_font_sizes/font_size = 24
+text = "timer: stopped"

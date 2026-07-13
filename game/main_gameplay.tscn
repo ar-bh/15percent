@@ -5,6 +5,7 @@
 
 [node name="MainGameplay" type="Node2D" unique_id=29669865]
 script = ExtResource("1_8fjku")
+metadata/_edit_horizontal_guides_ = [-753.0]
 
 [node name="Background" type="Control" parent="." unique_id=1560236750]
 layout_mode = 3
