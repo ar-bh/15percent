@@ -1,5 +1,5 @@
-CanvasGroup
 Polygon2D
+CanvasGroup
 TextureRect
 Button
 Line2D
@@ -12,4 +12,3 @@ RayCast2D
 Node2D
 Node
 VBoxContainer
-CenterContainer

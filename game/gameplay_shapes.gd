@@ -33,11 +33,8 @@ var last_reject_reason := ""
 @export var polygon_radius: float = 400.0
 @onready var polygon_center: Vector2 = Vector2(get_viewport().size.x / 2, get_viewport().size.y / 2)
 
-var shape_group: CanvasGroup
 var shape_polygon: Polygon2D
 var collision_polygon: CollisionPolygon2D
-var outline_material: ShaderMaterial
-const DESIGN_VIEWPORT := Vector2(1920, 1080)
 var polygon_points: PackedVector2Array
 var polygon_edges: Array = []
 
@@ -51,8 +48,8 @@ func _get_polygon_edges(points: PackedVector2Array) -> Array:
 
 func _delete_polygon_children() -> void:
 	for child in get_children():
-		if child is CanvasGroup:
-			child.queue_free()
+		if child is Polygon2D:
+			child.free()
 
 func _get_polygon_points(sides: int, center: Vector2, radius: float, start_angle: float = -PI / 2) -> PackedVector2Array:
 	var points := PackedVector2Array()
@@ -65,14 +62,13 @@ func _get_polygon_points(sides: int, center: Vector2, radius: float, start_angle
 	return points
 
 func draw_new_polygon(sides: int, center: Vector2, radius: float, shape_points: PackedVector2Array, start_angle: float = -PI / 2) -> void:
-	shape_group = CanvasGroup.new()
 	shape_polygon = Polygon2D.new()
 	collision_polygon = CollisionPolygon2D.new()
 	shape_polygon.polygon = shape_points
 	collision_polygon.polygon = shape_points
 	shape_polygon.add_child(collision_polygon)
-	shape_group.add_child(shape_polygon)
-	add_child(shape_group)
+	add_child(shape_polygon)
+	_arrange_themes()
 
 #endregion
 
@@ -83,7 +79,7 @@ var themes_list := {
 		"pointer": preload("res://game_assets/themes/regular_pointer.png"),
 		"background": preload("res://game_assets/themes/regular_background.png"),
 		"appearance_type": "color",
-		"color": Color8(237, 116, 64),
+		"color": Color("#ed7440"),
 	},
 }
 @export var theme: String = "regular"
@@ -96,10 +92,6 @@ func _ready() -> void:
 
 	_delete_polygon_children()
 	draw_new_polygon(polygon_sides, polygon_center, polygon_radius, polygon_points)
-
-	_arrange_themes()
-	_apply_shader()
-	get_tree().root.size_changed.connect(_on_window_resized)
 
 	timer_label.visible = debug
 
@@ -134,39 +126,25 @@ func _process(_delta: float) -> void:
 func _arrange_themes() -> void:
 	if shape_polygon == null or not is_instance_valid(shape_polygon):
 		return
-
+		
 	if not themes_list.has(theme):
 		return
-
+		
 	var theme_data: Dictionary = themes_list[theme]
-
+	
 	if background_texture != null and theme_data.has("background"):
 		background_texture.texture = theme_data["background"]
+		
 
 	if theme_data.get("appearance_type") == "color":
+		shape_polygon.texture = null
 		shape_polygon.color = theme_data["color"]
 	elif theme_data.has("texture"):
 		shape_polygon.texture = theme_data["texture"]
 
-func _apply_shader() -> void:
-	if shape_group == null or not is_instance_valid(shape_group):
-		return
-	if outline_material == null:
-		outline_material = ShaderMaterial.new()
-		outline_material.shader = preload("res://game_assets/group_outline.gdshader")
-		outline_material.set_shader_parameter("line_color", Color(0.08, 0.08, 0.08, 1.0))
-		outline_material.set_shader_parameter("line_thickness", 5)
-	_update_outline_scale()
-	shape_group.material = outline_material
+#endregion
 
-func _update_outline_scale() -> void:
-	if outline_material == null:
-		return
-	outline_material.set_shader_parameter("viewport_scale", get_viewport_rect().size / DESIGN_VIEWPORT)
-
-func _on_window_resized() -> void:
-	_update_outline_scale()
-
+#region core gameplay functions
 func _is_inside(point: Vector2) -> bool:
 	return Geometry2D.is_point_in_polygon(point, polygon_points)
 
@@ -241,8 +219,6 @@ func _perform_cut(from: Vector2, to: Vector2) -> void:
 
 	_delete_polygon_children()
 	draw_new_polygon(polygon_sides, polygon_center, polygon_radius, polygon_points)
-	_arrange_themes()
-	_apply_shader()
 
 func _build_piece(start_cut: Vector2, start_edge: int, end_cut: Vector2, end_edge: int, forward: bool) -> PackedVector2Array:
 	var piece := PackedVector2Array()
@@ -311,3 +287,4 @@ func _create_line(from: Vector2, to: Vector2) -> void:
 	line.add_point(from)
 	line.add_point(to)
 	add_child(line)
+#endregion
