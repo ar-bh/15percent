@@ -23,20 +23,25 @@ var peak_cut_speed: float = 0.0
 var last_delta: float = 0.016
 #endregion
 
+#region cut variables
 var cut_mode: bool = false
 var cut_timer_going: bool = false
 var cut_time_limit: float = 0.7
 var last_reject_reason := ""
+#endregion
 
 #region create and define polygon shape and mouse variables
 @export var polygon_sides: int = 4
 @export var polygon_radius: float = 400.0
 @onready var polygon_center: Vector2 = Vector2(get_viewport().size.x / 2, get_viewport().size.y / 2)
 
+var shape_group: CanvasGroup
 var shape_polygon: Polygon2D
 var collision_polygon: CollisionPolygon2D
+var outline_material: ShaderMaterial
+const DESIGN_VIEWPORT := Vector2(1920, 1080)
 var polygon_points: PackedVector2Array
-var polygon_edges: Array = []
+var polygon_edges: Array
 
 
 func _get_polygon_edges(points: PackedVector2Array) -> Array:
@@ -46,11 +51,22 @@ func _get_polygon_edges(points: PackedVector2Array) -> Array:
 		edges.append([points[i], points[next_i]])
 	return edges
 
-func _delete_polygon_children() -> void:
-	for child in get_children():
-		if child is Polygon2D:
-			child.free()
+#func _delete_polygon_children() -> void:
+	#for child in get_children():
+		#if child is CanvasGroup:
+			#child.free()
 
+func _apply_outline(group: CanvasGroup) -> void:
+	if outline_material == null:
+		outline_material = ShaderMaterial.new()
+		outline_material.shader = preload("res://game_assets/group_outline.gdshader")
+		outline_material.set_shader_parameter("line_color", Color(0.08, 0.08, 0.08, 1.0))
+		outline_material.set_shader_parameter("line_thickness", 10)
+	outline_material.set_shader_parameter("viewport_scale", get_viewport_rect().size / DESIGN_VIEWPORT)
+	group.fit_margin = 16.0
+	group.material = outline_material
+
+# gets the points to actually build the polygon
 func _get_polygon_points(sides: int, center: Vector2, radius: float, start_angle: float = -PI / 2) -> PackedVector2Array:
 	var points := PackedVector2Array()
 	var angle_step := TAU / sides
@@ -61,20 +77,33 @@ func _get_polygon_points(sides: int, center: Vector2, radius: float, start_angle
 
 	return points
 
-func draw_new_polygon(sides: int, center: Vector2, radius: float, shape_points: PackedVector2Array, start_angle: float = -PI / 2) -> void:
+func get_polygon_points() -> PackedVector2Array:
+	return polygon_points
+
+func _set_up_polygons_once(sides: int, center: Vector2, radius: float, shape_points: PackedVector2Array) -> void:
+	shape_group = CanvasGroup.new()
 	shape_polygon = Polygon2D.new()
 	collision_polygon = CollisionPolygon2D.new()
+	
 	shape_polygon.polygon = shape_points
 	collision_polygon.polygon = shape_points
+	
 	shape_polygon.add_child(collision_polygon)
-	add_child(shape_polygon)
+	shape_group.add_child(shape_polygon)
+	add_child(shape_group)
+	
+	_apply_outline(shape_group)
 	_arrange_themes()
+
+func update_polygon(sides: int, center: Vector2, radius: float, shape_points: PackedVector2Array) -> void:
+	shape_polygon.polygon = shape_points
+	collision_polygon.polygon = shape_points
 
 #endregion
 
 #region cut piece
-const CUT_PIECE_ANIM_DURATION := 1.0
-const CUT_PIECE_DISAPPEAR := true
+const CUT_PIECE_ANIM_DURATION := 0.4
+const CUT_PIECE_DISAPPEAR := false
 
 #endregion
 
@@ -92,13 +121,22 @@ var themes_list := {
 
 #endregion
 
+#region pointer variables
+const POINTER_SCENE := preload("res://game/pointer.tscn")
+@export var pointer_count := 2
+
+var pointer_nodes: Array[CharacterBody2D] = []
+
+#endregion
+
 func _ready() -> void:
-	#region cutting
 	polygon_points = _get_polygon_points(polygon_sides, polygon_center, polygon_radius)
 	polygon_edges = _get_polygon_edges(polygon_points)
+	_set_up_polygons_once(polygon_sides, polygon_center, polygon_radius, polygon_points)
+	update_polygon(polygon_sides, polygon_center, polygon_radius, polygon_points)
+	_spawn_pointers()
 
-	_delete_polygon_children()
-	draw_new_polygon(polygon_sides, polygon_center, polygon_radius, polygon_points)
+	#region cutting
 
 	timer_label.visible = debug
 
@@ -109,7 +147,12 @@ func _ready() -> void:
 
 	cut_timer.wait_time = 0.7
 	cut_timer.timeout.connect(_on_cut_timer_timeout)
+	get_tree().root.size_changed.connect(_on_window_resized)
 	#endregion
+
+func _on_window_resized() -> void:
+	if shape_group != null and is_instance_valid(shape_group):
+		_apply_outline(shape_group)
 
 func _process(_delta: float) -> void:
 	#region cutting
@@ -152,10 +195,47 @@ func _arrange_themes() -> void:
 	elif theme_data.has("texture"):
 		shape_polygon.texture = theme_data["texture"]
 
-#endregion
 
 #region pointers
+func _spawn_pointers() -> void:
+	for i in pointer_count:
+		var spawn_pos = _random_point_in_polygon(polygon_points)
+		if spawn_pos == null:
+			continue
+			
+		var pointer: CharacterBody2D = POINTER_SCENE.instantiate()
+		pointer.position = spawn_pos
+		pointer.z_index = 3
+		shape_group.add_child(pointer)
+		pointer_nodes.append(pointer)
 
+func _remove_pointers_outside(bounds: PackedVector2Array) -> void:
+	for pointer in pointer_nodes.duplicate():
+		if not Geometry2D.is_point_in_polygon(pointer.position, bounds):
+			pointer_nodes.erase(pointer)
+			pointer.queue_free()
+
+func _random_point_in_polygon(bounds: PackedVector2Array) -> Variant:
+	if bounds.is_empty():
+		return null
+		
+	var min_x := bounds[0].x
+	var max_x := bounds[0].x
+	var min_y := bounds[0].y
+	var max_y := bounds[0].y
+	
+	for point in bounds:
+		min_x = min(min_x, point.x)
+		max_x = max(max_x, point.x)
+		min_y = min(min_y, point.y)
+		max_y = max(max_y, point.y)
+		
+	for attempt in 100:
+		var candidate := Vector2(randf_range(min_x, max_x), randf_range(min_y, max_y))
+		if Geometry2D.is_point_in_polygon(candidate, bounds):
+			return candidate
+			
+	return null
 
 #endregion
 
@@ -237,8 +317,8 @@ func _perform_cut(from: Vector2, to: Vector2) -> void:
 	polygon_points = keeper
 	polygon_edges = _get_polygon_edges(polygon_points)
 
-	_delete_polygon_children()
-	draw_new_polygon(polygon_sides, polygon_center, polygon_radius, polygon_points)
+	_remove_pointers_outside(polygon_points)
+	update_polygon(polygon_sides, polygon_center, polygon_radius, polygon_points)
 	
 	if polygon1_points == keeper:
 		_animate_cut_piece(polygon2_points)
@@ -246,45 +326,52 @@ func _perform_cut(from: Vector2, to: Vector2) -> void:
 		_animate_cut_piece(polygon1_points)
 
 func _animate_cut_piece(cut_piece_points: PackedVector2Array) -> void:
-	var cut_piece = Polygon2D.new()
+	var cut_group := CanvasGroup.new()
+	var cut_piece := Polygon2D.new()
 	cut_piece.polygon = cut_piece_points
-	
+
 	if themes_list.has(theme) and themes_list[theme].get("appearance_type") == "color":
 		cut_piece.color = themes_list[theme]["color"]
-		
-	get_parent().add_child(cut_piece)
+
+	cut_group.add_child(cut_piece)
 	
+	_apply_outline(cut_group)
+	add_child(cut_group)
+	
+
 	var cut_piece_tween := create_tween()
-	cut_piece_tween.set_parallel(true) 
-	
+	cut_piece_tween.set_ease(Tween.EASE_IN)
+	cut_piece_tween.set_trans(Tween.TRANS_QUAD)
+	cut_piece_tween.set_parallel(true)
+
 	var screen_size = get_viewport().get_visible_rect().size
-	
+
 	var piece_center := Vector2.ZERO
 	for pt in cut_piece_points:
 		piece_center += pt
 	piece_center /= cut_piece_points.size()
-	
+
 	var dist_left = piece_center.x
 	var dist_right = screen_size.x - piece_center.x
 	var dist_top = piece_center.y
 	var dist_bottom = screen_size.y - piece_center.y
-	
+
 	var closest_dist = min(dist_left, dist_right, dist_top, dist_bottom)
-	
+
 	if closest_dist == dist_left:
-		cut_piece_tween.tween_property(cut_piece, "position:x", cut_piece.position.x - (dist_left + 100.0), CUT_PIECE_ANIM_DURATION)
+		cut_piece_tween.tween_property(cut_group, "position:x", cut_group.position.x - (dist_left + 100.0), CUT_PIECE_ANIM_DURATION)
 	elif closest_dist == dist_right:
-		cut_piece_tween.tween_property(cut_piece, "position:x", cut_piece.position.x + (dist_right + 100.0), CUT_PIECE_ANIM_DURATION)
+		cut_piece_tween.tween_property(cut_group, "position:x", cut_group.position.x + (dist_right + 100.0), CUT_PIECE_ANIM_DURATION)
 	elif closest_dist == dist_top:
-		cut_piece_tween.tween_property(cut_piece, "position:y", cut_piece.position.y - (dist_top + 100.0), CUT_PIECE_ANIM_DURATION)
+		cut_piece_tween.tween_property(cut_group, "position:y", cut_group.position.y - (dist_top + 100.0), CUT_PIECE_ANIM_DURATION)
 	elif closest_dist == dist_bottom:
-		cut_piece_tween.tween_property(cut_piece, "position:y", cut_piece.position.y + (dist_bottom + 100.0), CUT_PIECE_ANIM_DURATION)
-	
+		cut_piece_tween.tween_property(cut_group, "position:y", cut_group.position.y + (dist_bottom + 100.0), CUT_PIECE_ANIM_DURATION)
+
 	if CUT_PIECE_DISAPPEAR:
-		cut_piece_tween.tween_property(cut_piece, "modulate:a", 0.0, CUT_PIECE_ANIM_DURATION)
-		
+		cut_piece_tween.tween_property(cut_group, "modulate:a", 0.0, CUT_PIECE_ANIM_DURATION)
+
 	cut_piece_tween.chain().finished.connect(func() -> void:
-		cut_piece.queue_free()
+		cut_group.queue_free()
 	)
 
 func _build_piece(start_cut: Vector2, start_edge: int, end_cut: Vector2, end_edge: int, forward: bool) -> PackedVector2Array:

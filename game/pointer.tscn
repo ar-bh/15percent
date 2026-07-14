@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://d37pvdt0sgu0y"]
+
+[ext_resource type="Script" uid="uid://cya3fky5grd4m" path="res://game/pointer.gd" id="1_nvxlf"]
+[ext_resource type="Texture2D" uid="uid://cnsnlwvf2tkqe" path="res://game_assets/themes/regular_pointer.png" id="2_ynp3l"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lu6pp"]
+radius = 20.024984
+
+[node name="Pointer" type="CharacterBody2D" unique_id=598463045 groups=["pointer"]]
+script = ExtResource("1_nvxlf")
+
+[node name="PointerSkin" type="Sprite2D" parent="." unique_id=1693184533]
+scale = Vector2(0.024, 0.024)
+texture = ExtResource("2_ynp3l")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=80296289]
+shape = SubResource("CircleShape2D_lu6pp")

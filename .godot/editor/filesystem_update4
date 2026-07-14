@@ -1,7 +1,8 @@
-res://game/gameplay_shapes.tscn
+res://pointer.tscn
 res://game_assets/group_outline.gdshader
-res://game/gameplay_shapes.gd
-res://game/polygon_test.tscn
-res://polygon_test.gd
 res://game/main_gameplay.tscn
-res://game/start_screen.tscn
+res://pointer.gd
+res://game/pointer.tscn
+res://game/pointer_test.tscn
+res://game/pointer.gd
+res://game/gameplay_shapes.gd

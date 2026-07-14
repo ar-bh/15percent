@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://caxx7ce4vi8pa"]
+
+[ext_resource type="PackedScene" uid="uid://d37pvdt0sgu0y" path="res://game/pointer.tscn" id="1_akme0"]
+
+[node name="Test" type="Node2D" unique_id=67880817]
+
+[node name="Polygon2D" type="Polygon2D" parent="." unique_id=842780699]
+polygon = PackedVector2Array(353, 70, 69, 351, 279, 682, 1202, 618, 1243, 173)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Polygon2D" unique_id=1806966188]
+polygon = PackedVector2Array(353, 69, 72, 350, 282, 682, 1202, 618, 1242, 177)
+
+[node name="Pointer" parent="." unique_id=598463045 instance=ExtResource("1_akme0")]
+position = Vector2(175, 168)
