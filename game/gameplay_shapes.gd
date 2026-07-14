@@ -1,6 +1,6 @@
 extends Node2D
 
-var debug := true
+var debug := false
 
 #region node variables
 @onready var cut_timer: Timer = %CutTimer
@@ -141,6 +141,7 @@ func _ready() -> void:
 	full_area = _polygon_area(polygon_points)
 	
 	_spawn_pointers()
+	
 
 	#region cutting
 
@@ -184,6 +185,10 @@ func _process(_delta: float) -> void:
 	was_inside = inside
 	prev_mouse = mouse
 	#endregion
+
+	if Input.is_action_just_pressed("debug_mode"):
+		debug = not debug
+		timer_label.visible = debug
 
 func _arrange_themes() -> void:
 	if shape_polygon == null or not is_instance_valid(shape_polygon):
