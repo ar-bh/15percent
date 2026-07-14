@@ -1,6 +1,6 @@
 extends Node2D
 
-var debug := false
+var debug := true
 
 #region node variables
 @onready var cut_timer: Timer = %CutTimer
@@ -34,6 +34,9 @@ var last_reject_reason := ""
 @export var polygon_sides: int = 4
 @export var polygon_radius: float = 400.0
 @onready var polygon_center: Vector2 = Vector2(get_viewport().size.x / 2, get_viewport().size.y / 2)
+var full_area: float
+var current_area: float
+var current_area_percent: float
 
 var shape_group: CanvasGroup
 var shape_polygon: Polygon2D
@@ -134,6 +137,9 @@ func _ready() -> void:
 	polygon_edges = _get_polygon_edges(polygon_points)
 	_set_up_polygons_once(polygon_sides, polygon_center, polygon_radius, polygon_points)
 	update_polygon(polygon_sides, polygon_center, polygon_radius, polygon_points)
+	
+	full_area = _polygon_area(polygon_points)
+	
 	_spawn_pointers()
 
 	#region cutting
@@ -155,6 +161,9 @@ func _on_window_resized() -> void:
 		_apply_outline(shape_group)
 
 func _process(_delta: float) -> void:
+	current_area = _polygon_area(polygon_points)
+	current_area_percent = (current_area / full_area) * 100.0
+	
 	#region cutting
 	last_delta = max(_delta, 0.0001)
 	cut_mode = Input.is_action_pressed("cut_mode") or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
@@ -194,7 +203,6 @@ func _arrange_themes() -> void:
 		shape_polygon.color = theme_data["color"]
 	elif theme_data.has("texture"):
 		shape_polygon.texture = theme_data["texture"]
-
 
 #region pointers
 func _spawn_pointers() -> void:
@@ -310,9 +318,29 @@ func _perform_cut(from: Vector2, to: Vector2) -> void:
 	var polygon1_points := _build_piece(cut_a, edge_a, cut_b, edge_b, true)
 	var polygon2_points := _build_piece(cut_a, edge_a, cut_b, edge_b, false)
 
-	var area1 := _polygon_area(polygon1_points)
-	var area2 := _polygon_area(polygon2_points)
-	var keeper := polygon1_points if area1 >= area2 else polygon2_points
+	var pointers_in_polygon1 := false
+	var pointers_in_polygon2 := false
+
+	for pointer in pointer_nodes:
+		if Geometry2D.is_point_in_polygon(pointer.position, polygon1_points):
+			pointers_in_polygon1 = true
+		if Geometry2D.is_point_in_polygon(pointer.position, polygon2_points):
+			pointers_in_polygon2 = true
+	
+	var keeper
+	
+	if pointers_in_polygon2 and not pointers_in_polygon1:
+		keeper = polygon2_points
+	elif pointers_in_polygon1 and not pointers_in_polygon2:
+		keeper = polygon1_points
+	elif not pointers_in_polygon1 and not pointers_in_polygon2:
+		var area1 := _polygon_area(polygon1_points)
+		var area2 := _polygon_area(polygon2_points)
+		keeper = polygon1_points if area1 >= area2 else polygon2_points
+	elif pointers_in_polygon1 and pointers_in_polygon2:
+		# GAME LOST
+		game_lost()
+		return
 
 	polygon_points = keeper
 	polygon_edges = _get_polygon_edges(polygon_points)
@@ -422,6 +450,7 @@ func _on_cut_timer_timeout() -> void:
 
 func _update_timer_label() -> void:
 	var time_left_text := "stopped"
+	timer_label.z_index = 100
 	if not cut_timer.is_stopped():
 		time_left_text = "%.2fs" % cut_timer.time_left
 
@@ -430,7 +459,8 @@ func _update_timer_label() -> void:
 		+ "cut_mode: %s\n" % str(cut_mode)
 		+ "inside: %s\n" % str(inside)
 		+ "speed: %.0f (peak %.0f, min %.0f)\n" % [scalar_mouse_velocity, peak_cut_speed, minimum_cut_speed]
-		+ "last: %s" % last_reject_reason
+		+ "last: %s\n" % last_reject_reason
+		+ "area: %s" % current_area_percent
 	)
 
 func _create_line(from: Vector2, to: Vector2) -> void:
@@ -442,3 +472,7 @@ func _create_line(from: Vector2, to: Vector2) -> void:
 	line.add_point(to)
 	add_child(line)
 #endregion
+
+
+func game_lost() -> void:
+	pass

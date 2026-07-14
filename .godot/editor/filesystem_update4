@@ -6,3 +6,4 @@ res://game/pointer.tscn
 res://game/pointer_test.tscn
 res://game/pointer.gd
 res://game/gameplay_shapes.gd
+res://game/gameplay_shapes.tscn
