@@ -72,6 +72,12 @@ func draw_new_polygon(sides: int, center: Vector2, radius: float, shape_points: 
 
 #endregion
 
+#region cut piece
+const CUT_PIECE_ANIM_DURATION := 1.0
+const CUT_PIECE_DISAPPEAR := true
+
+#endregion
+
 #region THEMES!
 
 var themes_list := {
@@ -87,6 +93,7 @@ var themes_list := {
 #endregion
 
 func _ready() -> void:
+	#region cutting
 	polygon_points = _get_polygon_points(polygon_sides, polygon_center, polygon_radius)
 	polygon_edges = _get_polygon_edges(polygon_points)
 
@@ -102,8 +109,10 @@ func _ready() -> void:
 
 	cut_timer.wait_time = 0.7
 	cut_timer.timeout.connect(_on_cut_timer_timeout)
+	#endregion
 
 func _process(_delta: float) -> void:
+	#region cutting
 	last_delta = max(_delta, 0.0001)
 	cut_mode = Input.is_action_pressed("cut_mode") or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 
@@ -122,6 +131,7 @@ func _process(_delta: float) -> void:
 
 	was_inside = inside
 	prev_mouse = mouse
+	#endregion
 
 func _arrange_themes() -> void:
 	if shape_polygon == null or not is_instance_valid(shape_polygon):
@@ -144,7 +154,13 @@ func _arrange_themes() -> void:
 
 #endregion
 
-#region core gameplay functions
+#region pointers
+
+
+#endregion
+
+
+#region cutting gameplay functions
 func _is_inside(point: Vector2) -> bool:
 	return Geometry2D.is_point_in_polygon(point, polygon_points)
 
@@ -176,6 +192,10 @@ func _handle_mouse_enter_exit(frame_speed: float) -> void:
 		var reject_reason := _check_valid_line(prev_mouse, mouse, polygon_edges, false)
 		last_reject_reason = reject_reason if reject_reason != "" else "line drawn (fast)"
 		if reject_reason == "":
+			
+			if debug:
+				_create_line(prev_mouse, mouse)
+			
 			_perform_cut(prev_mouse, mouse)
 		return
 
@@ -219,6 +239,53 @@ func _perform_cut(from: Vector2, to: Vector2) -> void:
 
 	_delete_polygon_children()
 	draw_new_polygon(polygon_sides, polygon_center, polygon_radius, polygon_points)
+	
+	if polygon1_points == keeper:
+		_animate_cut_piece(polygon2_points)
+	else:
+		_animate_cut_piece(polygon1_points)
+
+func _animate_cut_piece(cut_piece_points: PackedVector2Array) -> void:
+	var cut_piece = Polygon2D.new()
+	cut_piece.polygon = cut_piece_points
+	
+	if themes_list.has(theme) and themes_list[theme].get("appearance_type") == "color":
+		cut_piece.color = themes_list[theme]["color"]
+		
+	get_parent().add_child(cut_piece)
+	
+	var cut_piece_tween := create_tween()
+	cut_piece_tween.set_parallel(true) 
+	
+	var screen_size = get_viewport().get_visible_rect().size
+	
+	var piece_center := Vector2.ZERO
+	for pt in cut_piece_points:
+		piece_center += pt
+	piece_center /= cut_piece_points.size()
+	
+	var dist_left = piece_center.x
+	var dist_right = screen_size.x - piece_center.x
+	var dist_top = piece_center.y
+	var dist_bottom = screen_size.y - piece_center.y
+	
+	var closest_dist = min(dist_left, dist_right, dist_top, dist_bottom)
+	
+	if closest_dist == dist_left:
+		cut_piece_tween.tween_property(cut_piece, "position:x", cut_piece.position.x - (dist_left + 100.0), CUT_PIECE_ANIM_DURATION)
+	elif closest_dist == dist_right:
+		cut_piece_tween.tween_property(cut_piece, "position:x", cut_piece.position.x + (dist_right + 100.0), CUT_PIECE_ANIM_DURATION)
+	elif closest_dist == dist_top:
+		cut_piece_tween.tween_property(cut_piece, "position:y", cut_piece.position.y - (dist_top + 100.0), CUT_PIECE_ANIM_DURATION)
+	elif closest_dist == dist_bottom:
+		cut_piece_tween.tween_property(cut_piece, "position:y", cut_piece.position.y + (dist_bottom + 100.0), CUT_PIECE_ANIM_DURATION)
+	
+	if CUT_PIECE_DISAPPEAR:
+		cut_piece_tween.tween_property(cut_piece, "modulate:a", 0.0, CUT_PIECE_ANIM_DURATION)
+		
+	cut_piece_tween.chain().finished.connect(func() -> void:
+		cut_piece.queue_free()
+	)
 
 func _build_piece(start_cut: Vector2, start_edge: int, end_cut: Vector2, end_edge: int, forward: bool) -> PackedVector2Array:
 	var piece := PackedVector2Array()

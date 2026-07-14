@@ -30,3 +30,4 @@ texture = ExtResource("2_8fjku")
 stretch_mode = 5
 
 [node name="GameplayShapes" parent="." unique_id=922722316 instance=ExtResource("3_v8vcv")]
+polygon_sides = 6
