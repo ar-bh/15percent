@@ -1,7 +1,11 @@
 63f7b34db8d8cdea90c76aacccf841ec
-::res://::1784140494
+::res://::1784140517
+export_presets.cfg::TextFile::-1::1784140219::0::1::::<><><>0<>0<><>::
+icon_telling_a_story.png::CompressedTexture2D::7976005394388358668::1776102617::1784140526::1::::<><><>0<>0<>3bf51f8796ecde2ad47157822b02f6da<>res://.godot/imported/icon_telling_a_story.png-575f1234b8f51c85751bd402286d7779.ctex::
+index.apple-touch-icon.png::CompressedTexture2D::2292523850231749190::1784140218::1784140526::1::::<><><>0<>0<>17c5c9de33658f93478483a9fd9fc042<>res://.godot/imported/index.apple-touch-icon.png-8085a11cc297d91deb55511843765958.ctex::
 index.icon.png::CompressedTexture2D::6963795663008437790::1784140218::1784140498::1::::<><><>0<>0<>9d93d06c18426e43980536607a3d68ec<>res://.godot/imported/index.icon.png-5665fad188e88d1e882500a4376bfe02.ctex::
 index.png::CompressedTexture2D::7387371237535207366::1784140218::1784140232::1::::<><><>0<>0<>5b2ef1658f5c0741ad6849b2f3a50ca0<>res://.godot/imported/index.png-5122033cac747157decad52589e2295c.ctex::
+polygon_test.gd::GDScript::-1::1784049615::0::1::::<>Node2D<><>0<>0<><>::
 README.md::TextFile::-1::1783711334::0::1::::<><><>0<>0<><>::
 ::res://addons/::1783971846
 ::res://addons/godot_super-wakatime/::1782916694
@@ -12,7 +16,7 @@ godot_super-wakatime.gd::GDScript::6277149880384411866::1782914813::0::1::::<>Ed
 plugin.cfg::TextFile::-1::1782914813::0::1::::<><><>0<>0<><>::
 README.md::TextFile::-1::1782914813::0::1::::<><><>0<>0<><>::
 utils.gd::GDScript::5251015809120159908::1782914813::0::1::::<>RefCounted<><>0<>0<><>::
-::res://game/::1784140497
+::res://game/::1784140517
 gameplay_shapes.gd::GDScript::3095433769342049744::1784138562::0::1::::<>Node2D<><>0<>0<><>::
 gameplay_shapes.tscn::PackedScene::3150283095325934355::1784138562::0::1::::<><><>0<>0<><>::uid://bkdplvjk0qja3::::res://game/gameplay_shapes.gd
 main.gd::GDScript::6524342182407386946::1784138562::0::1::::<>Node2D<><>0<>0<><>::
@@ -20,7 +24,6 @@ main_gameplay.tscn::PackedScene::7925186297910164858::1784138562::0::1::::<><><>
 pointer.gd::GDScript::6459083183146525594::1784066259::0::1::::<>CharacterBody2D<><>0<>0<><>::
 pointer.tscn::PackedScene::9191558205719156330::1784066301::0::1::::<><><>0<>0<><>::uid://cya3fky5grd4m::::res://game/pointer.gd<>uid://cnsnlwvf2tkqe::::res://game_assets/themes/regular_pointer.png
 pointer_test.tscn::PackedScene::4821775804540123698::1784062709::0::1::::<><><>0<>0<><>::uid://d37pvdt0sgu0y::::res://game/pointer.tscn
-polygon_test.gd::GDScript::-1::1784049615::0::1::::<>Node2D<><>0<>0<><>::
 polygon_test.tscn::PackedScene::2255446820483915575::1784061988::0::1::::<><><>0<>0<><>::uid://dao5p86xpyucp::::res://polygon_test.gd
 start_screen.gd::GDScript::2396454936059364819::1784138607::0::1::::<>Control<><>0<>0<><>::
 start_screen.tscn::PackedScene::6434903903571137683::1784140203::0::1::::<><><>0<>0<><>::uid://bae4i6v88iyrb::::res://game/start_screen.gd<>uid://bbhkpw782ljwr::::res://game_assets/startscreen_parallax.png
