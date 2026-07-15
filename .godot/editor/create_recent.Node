@@ -1,3 +1,6 @@
+Control
+RichTextLabel
+Panel
 CollisionPolygon2D
 CollisionShape2D
 CharacterBody2D
@@ -10,5 +13,3 @@ Button
 Line2D
 Timer
 ColorRect
-Area2D
-Label
