@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://bkdplvjk0qja3" path="res://game/gameplay_shapes.gd" id="1_0ui45"]
 
 [node name="GameplayShapes" type="Node2D" unique_id=922722316]
-position = Vector2(0, 16)
 script = ExtResource("1_0ui45")
 
 [node name="CutTimer" type="Timer" parent="." unique_id=1344935262]

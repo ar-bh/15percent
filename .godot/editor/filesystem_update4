@@ -7,3 +7,6 @@ res://game/pointer_test.tscn
 res://game/pointer.gd
 res://game/gameplay_shapes.gd
 res://game/gameplay_shapes.tscn
+res://game/main.gd
+res://game/start_screen.tscn
+res://game/start_screen.gd
