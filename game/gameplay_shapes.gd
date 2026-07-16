@@ -6,7 +6,7 @@ var debug := false
 @onready var cut_timer: Timer = %CutTimer
 @onready var timer_label: Label = %TimerLabel
 
-@onready var background_texture: TextureRect = get_node_or_null("../BackgroundLayer/Background/Parallax2D/TextureRect")
+@onready var background_texture: TextureRect = get_node_or_null("../Background/Parallax2D/TextureRect")
 #endregion
 
 #region mouse variables
@@ -32,10 +32,8 @@ var last_reject_reason := ""
 
 #region create and define polygon shape and mouse variables
 @export var polygon_sides: int = 4
-@export var min_polygon_sides: int = 4
-@export var max_polygon_sides: int = 8
 @export var polygon_radius: float = 400.0
-var polygon_center := Vector2.ZERO
+@onready var polygon_center: Vector2 = Vector2(get_viewport().size.x / 2, get_viewport().size.y / 2)
 var full_area: float
 var current_area: float
 var current_area_percent: float
@@ -79,19 +77,6 @@ func _get_polygon_points(sides: int, center: Vector2, radius: float, start_angle
 	for side in sides:
 		var angle := start_angle + angle_step * side
 		points.append(center + Vector2(cos(angle), sin(angle)) * radius)
-
-	return points
-
-func _get_random_polygon_points() -> PackedVector2Array:
-	polygon_sides = randi_range(min_polygon_sides, max_polygon_sides)
-	var start_angle := randf() * TAU
-	var angle_step := TAU / float(polygon_sides)
-	var points := PackedVector2Array()
-
-	for side in polygon_sides:
-		var angle := start_angle + angle_step * side
-		var radius := polygon_radius * randf_range(0.88, 1.12)
-		points.append(polygon_center + Vector2(cos(angle), sin(angle)) * radius)
 
 	return points
 
@@ -145,30 +130,14 @@ const POINTER_SCENE := preload("res://game/pointer.tscn")
 
 var pointer_nodes: Array[CharacterBody2D] = []
 
-const MAIN_GAMEPLAY_SCENE := "res://game/main_gameplay.tscn"
-const START_SCREEN_SCENE := "res://game/start_screen.tscn"
-const AREA_THRESHOLD := 15.0
-
-var game_over := false
-var awaiting_next := false
-var allow_next_prompt := true
-var delete_cutoff_pointers := false
-
-@onready var area_label: Label = get_parent().get_node("UI/AreaLabel")
-@onready var game_panel: Panel = get_parent().get_node("UI/GamePanel")
-@onready var message_label: Label = get_parent().get_node("UI/GamePanel/VBoxContainer/MessageLabel")
-@onready var restart_button: Button = get_parent().get_node("UI/GamePanel/VBoxContainer/ButtonRow/RestartButton")
-@onready var menu_button: Button = get_parent().get_node("UI/GamePanel/VBoxContainer/ButtonRow/MenuButton")
-@onready var next_button: Button = get_parent().get_node("UI/GamePanel/VBoxContainer/ButtonRow/NextButton")
-
 #endregion
 
 func _ready() -> void:
-	polygon_points = _get_random_polygon_points()
+	polygon_points = _get_polygon_points(polygon_sides, polygon_center, polygon_radius)
 	polygon_edges = _get_polygon_edges(polygon_points)
 	_set_up_polygons_once(polygon_sides, polygon_center, polygon_radius, polygon_points)
 	update_polygon(polygon_sides, polygon_center, polygon_radius, polygon_points)
-
+	
 	full_area = _polygon_area(polygon_points)
 	
 	_spawn_pointers()
@@ -186,29 +155,16 @@ func _ready() -> void:
 	cut_timer.wait_time = 0.7
 	cut_timer.timeout.connect(_on_cut_timer_timeout)
 	get_tree().root.size_changed.connect(_on_window_resized)
-
-	restart_button.pressed.connect(_on_restart_pressed)
-	menu_button.pressed.connect(_on_menu_pressed)
-	next_button.pressed.connect(_on_next_pressed)
-	game_panel.visible = false
 	#endregion
 
 func _on_window_resized() -> void:
 	if shape_group != null and is_instance_valid(shape_group):
 		_apply_outline(shape_group)
 
-
-func on_viewport_resized() -> void:
-	_on_window_resized()
-
 func _process(_delta: float) -> void:
 	current_area = _polygon_area(polygon_points)
 	current_area_percent = (current_area / full_area) * 100.0
-	area_label.text = "%.1f%%" % current_area_percent
-
-	if game_over or awaiting_next:
-		return
-
+	
 	#region cutting
 	last_delta = max(_delta, 0.0001)
 	cut_mode = Input.is_action_pressed("cut_mode") or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
@@ -234,15 +190,6 @@ func _process(_delta: float) -> void:
 		debug = not debug
 		timer_label.visible = debug
 
-	if Input.is_action_just_pressed("delete_cutoff_pointers"):
-		delete_cutoff_pointers = not delete_cutoff_pointers
-
-	if Input.is_action_just_pressed("add_pointer"):
-		_add_pointer()
-
-	if Input.is_action_just_pressed("remove_pointer"):
-		_remove_one_pointer()
-
 func _arrange_themes() -> void:
 	if shape_polygon == null or not is_instance_valid(shape_polygon):
 		return
@@ -265,41 +212,21 @@ func _arrange_themes() -> void:
 #region pointers
 func _spawn_pointers() -> void:
 	for i in pointer_count:
-		_spawn_one_pointer()
+		var spawn_pos = _random_point_in_polygon(polygon_points)
+		if spawn_pos == null:
+			continue
+			
+		var pointer: CharacterBody2D = POINTER_SCENE.instantiate()
+		pointer.position = spawn_pos
+		pointer.z_index = 3
+		shape_group.add_child(pointer)
+		pointer_nodes.append(pointer)
 
-
-func _spawn_one_pointer() -> void:
-	var spawn_pos = _random_point_in_polygon(polygon_points)
-	if spawn_pos == null:
-		return
-
-	var pointer: CharacterBody2D = POINTER_SCENE.instantiate()
-	pointer.position = spawn_pos
-	pointer.z_index = 3
-	pointer.set_physics_process(not game_over and not awaiting_next)
-	shape_group.add_child(pointer)
-	pointer_nodes.append(pointer)
-
-
-func _add_pointer() -> void:
-	pointer_count += 1
-	_spawn_one_pointer()
-
-
-func _remove_one_pointer() -> void:
-	if pointer_nodes.is_empty():
-		return
-	pointer_count = maxi(0, pointer_count - 1)
-	var pointer: CharacterBody2D = pointer_nodes.pop_back()
-	pointer.queue_free()
-
-func _remove_pointers_in_piece(piece_points: PackedVector2Array) -> void:
+func _remove_pointers_outside(bounds: PackedVector2Array) -> void:
 	for pointer in pointer_nodes.duplicate():
-		if Geometry2D.is_point_in_polygon(pointer.position, piece_points):
+		if not Geometry2D.is_point_in_polygon(pointer.position, bounds):
 			pointer_nodes.erase(pointer)
 			pointer.queue_free()
-			pointer_count = maxi(0, pointer_count - 1)
-
 
 func _random_point_in_polygon(bounds: PackedVector2Array) -> Variant:
 	if bounds.is_empty():
@@ -361,37 +288,13 @@ func _handle_mouse_enter_exit(frame_speed: float) -> void:
 			
 			if debug:
 				_create_line(prev_mouse, mouse)
-			else:
-				_perform_cut(prev_mouse, mouse)
+			
+			_perform_cut(prev_mouse, mouse)
 		return
 
 	if not cut_mode:
 		cut_timer.stop()
 		cut_timer_going = false
-
-func _count_pointers_in_piece(piece_points: PackedVector2Array) -> int:
-	var count := 0
-	for pointer in pointer_nodes:
-		if Geometry2D.is_point_in_polygon(pointer.position, piece_points):
-			count += 1
-	return count
-
-
-func _choose_keeper_piece(
-	piece_a: PackedVector2Array,
-	piece_b: PackedVector2Array,
-	pointers_a: int,
-	pointers_b: int
-) -> PackedVector2Array:
-	if pointers_a > pointers_b:
-		return piece_a
-	if pointers_b > pointers_a:
-		return piece_b
-
-	var area_a := _polygon_area(piece_a)
-	var area_b := _polygon_area(piece_b)
-	return piece_a if area_a >= area_b else piece_b
-
 
 func _perform_cut(from: Vector2, to: Vector2) -> void:
 	var hits := []
@@ -417,39 +320,38 @@ func _perform_cut(from: Vector2, to: Vector2) -> void:
 	if edge_a == edge_b:
 		return
 
-	_screen_shake()
-
 	var polygon1_points := _build_piece(cut_a, edge_a, cut_b, edge_b, true)
 	var polygon2_points := _build_piece(cut_a, edge_a, cut_b, edge_b, false)
 
-	var pointers_in_polygon1 := _count_pointers_in_piece(polygon1_points)
-	var pointers_in_polygon2 := _count_pointers_in_piece(polygon2_points)
+	var pointers_in_polygon1 := false
+	var pointers_in_polygon2 := false
 
-	if pointers_in_polygon1 > 0 and pointers_in_polygon2 > 0 and not delete_cutoff_pointers:
-		game_lost(from, to)
+	for pointer in pointer_nodes:
+		if Geometry2D.is_point_in_polygon(pointer.position, polygon1_points):
+			pointers_in_polygon1 = true
+		if Geometry2D.is_point_in_polygon(pointer.position, polygon2_points):
+			pointers_in_polygon2 = true
+	
+	var keeper
+	
+	if pointers_in_polygon2 and not pointers_in_polygon1:
+		keeper = polygon2_points
+	elif pointers_in_polygon1 and not pointers_in_polygon2:
+		keeper = polygon1_points
+	elif not pointers_in_polygon1 and not pointers_in_polygon2:
+		var area1 := _polygon_area(polygon1_points)
+		var area2 := _polygon_area(polygon2_points)
+		keeper = polygon1_points if area1 >= area2 else polygon2_points
+	elif pointers_in_polygon1 and pointers_in_polygon2:
+		# GAME LOST
+		game_lost()
 		return
-
-	var keeper := _choose_keeper_piece(
-		polygon1_points,
-		polygon2_points,
-		pointers_in_polygon1,
-		pointers_in_polygon2
-	)
 
 	polygon_points = keeper
 	polygon_edges = _get_polygon_edges(polygon_points)
 
-	var discarded := polygon2_points if polygon1_points == keeper else polygon1_points
-	if delete_cutoff_pointers:
-		_remove_pointers_in_piece(discarded)
-
+	_remove_pointers_outside(polygon_points)
 	update_polygon(polygon_sides, polygon_center, polygon_radius, polygon_points)
-
-	allow_next_prompt = true
-	current_area = _polygon_area(polygon_points)
-	current_area_percent = (current_area / full_area) * 100.0
-	area_label.text = "%.1f%%" % current_area_percent
-	_check_area_threshold()
 	
 	if polygon1_points == keeper:
 		_animate_cut_piece(polygon2_points)
@@ -475,17 +377,17 @@ func _animate_cut_piece(cut_piece_points: PackedVector2Array) -> void:
 	cut_piece_tween.set_trans(Tween.TRANS_QUAD)
 	cut_piece_tween.set_parallel(true)
 
-	var half_screen := get_viewport().get_visible_rect().size / 2.0
+	var screen_size = get_viewport().get_visible_rect().size
 
 	var piece_center := Vector2.ZERO
 	for pt in cut_piece_points:
 		piece_center += pt
 	piece_center /= cut_piece_points.size()
 
-	var dist_left = piece_center.x + half_screen.x
-	var dist_right = half_screen.x - piece_center.x
-	var dist_top = piece_center.y + half_screen.y
-	var dist_bottom = half_screen.y - piece_center.y
+	var dist_left = piece_center.x
+	var dist_right = screen_size.x - piece_center.x
+	var dist_top = piece_center.y
+	var dist_bottom = screen_size.y - piece_center.y
 
 	var closest_dist = min(dist_left, dist_right, dist_top, dist_bottom)
 
@@ -563,11 +465,10 @@ func _update_timer_label() -> void:
 		+ "inside: %s\n" % str(inside)
 		+ "speed: %.0f (peak %.0f, min %.0f)\n" % [scalar_mouse_velocity, peak_cut_speed, minimum_cut_speed]
 		+ "last: %s\n" % last_reject_reason
-		+ "area: %s\n" % current_area_percent
-		+ "cmd+3 (no lose, delete cut pointers): %s" % str(delete_cutoff_pointers)
+		+ "area: %s" % current_area_percent
 	)
 
-func _create_line(from: Vector2, to: Vector2) -> Line2D:
+func _create_line(from: Vector2, to: Vector2) -> void:
 	var line := Line2D.new()
 	line.width = 10.0
 	line.default_color = Color.BLACK
@@ -575,112 +476,8 @@ func _create_line(from: Vector2, to: Vector2) -> Line2D:
 	line.add_point(from)
 	line.add_point(to)
 	add_child(line)
-	return line
 #endregion
 
-#region game flow
 
-func _set_pointer_movement(active: bool) -> void:
-	for pointer in pointer_nodes:
-		if is_instance_valid(pointer):
-			pointer.set_physics_process(active)
-
-
-func _clear_pointers() -> void:
-	for pointer in pointer_nodes:
-		if is_instance_valid(pointer):
-			pointer.queue_free()
-	pointer_nodes.clear()
-
-
-func _clear_cut_debris() -> void:
-	for child in get_children():
-		if child is Line2D:
-			child.queue_free()
-		elif child is CanvasGroup and child != shape_group:
-			child.queue_free()
-
-
-func _reset_polygon() -> void:
-	polygon_points = _get_random_polygon_points()
-	polygon_edges = _get_polygon_edges(polygon_points)
-	update_polygon(polygon_sides, polygon_center, polygon_radius, polygon_points)
-	full_area = _polygon_area(polygon_points)
-	current_area = full_area
-	current_area_percent = 100.0
-	area_label.text = "%.1f%%" % current_area_percent
-
-
-func _screen_shake() -> void:
-	var main := get_parent()
-	if main.has_method("screen_shake"):
-		main.screen_shake()
-
-
-func _start_next_level() -> void:
-	pointer_count += 1
-	_clear_cut_debris()
-	_clear_pointers()
-	_reset_polygon()
-	_spawn_pointers()
-	awaiting_next = false
-	allow_next_prompt = true
-	_hide_game_panel()
-	_set_pointer_movement(true)
-	prev_mouse = get_local_mouse_position()
-	mouse = prev_mouse
-	was_inside = _is_inside(mouse)
-	inside = was_inside
-	cut_timer.stop()
-	cut_timer_going = false
-
-
-func _show_game_panel(message: String, show_lose_buttons: bool, show_next_button: bool) -> void:
-	message_label.text = message
-	restart_button.visible = show_lose_buttons
-	menu_button.visible = show_lose_buttons
-	next_button.visible = show_next_button
-	game_panel.visible = true
-
-
-func _hide_game_panel() -> void:
-	game_panel.visible = false
-
-
-func _check_area_threshold() -> void:
-	if game_over or awaiting_next or not allow_next_prompt:
-		return
-	if current_area_percent <= AREA_THRESHOLD:
-		_show_next_panel()
-
-
-func _show_next_panel() -> void:
-	awaiting_next = true
-	allow_next_prompt = false
-	_set_pointer_movement(false)
-	cut_timer.stop()
-	cut_timer_going = false
-	_show_game_panel("Level beaten!", false, true)
-
-
-func game_lost(from: Vector2, to: Vector2) -> void:
-	game_over = true
-	_create_line(from, to)
-	_set_pointer_movement(false)
-	cut_timer.stop()
-	cut_timer_going = false
-	_show_game_panel("You lost", true, false)
-
-
-func _on_restart_pressed() -> void:
-	get_tree().change_scene_to_file(MAIN_GAMEPLAY_SCENE)
-
-
-func _on_menu_pressed() -> void:
-	get_tree().change_scene_to_file(START_SCREEN_SCENE)
-
-
-func _on_next_pressed() -> void:
-	_start_next_level()
-
-#endregion
+func game_lost() -> void:
+	pass
