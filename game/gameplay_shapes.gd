@@ -6,7 +6,7 @@ var debug := false
 @onready var cut_timer: Timer = %CutTimer
 @onready var timer_label: Label = %TimerLabel
 
-@onready var background_texture: TextureRect = get_node_or_null("../Background/Parallax2D/TextureRect")
+@onready var background_texture: TextureRect = get_node_or_null("../BackgroundLayer/Background/Parallax2D/TextureRect")
 #endregion
 
 #region mouse variables
@@ -33,7 +33,7 @@ var last_reject_reason := ""
 #region create and define polygon shape and mouse variables
 @export var polygon_sides: int = 4
 @export var polygon_radius: float = 400.0
-@onready var polygon_center: Vector2 = Vector2(get_viewport().size.x / 2, get_viewport().size.y / 2)
+var polygon_center := Vector2.ZERO
 var full_area: float
 var current_area: float
 var current_area_percent: float
@@ -129,6 +129,9 @@ const POINTER_SCENE := preload("res://game/pointer.tscn")
 @export var pointer_count := 2
 
 var pointer_nodes: Array[CharacterBody2D] = []
+var delete_cutoff_pointers := false
+
+@onready var area_label: Label = get_parent().get_node("UI/AreaLabel")
 
 #endregion
 
@@ -161,10 +164,15 @@ func _on_window_resized() -> void:
 	if shape_group != null and is_instance_valid(shape_group):
 		_apply_outline(shape_group)
 
+
+func on_viewport_resized() -> void:
+	_on_window_resized()
+
 func _process(_delta: float) -> void:
 	current_area = _polygon_area(polygon_points)
 	current_area_percent = (current_area / full_area) * 100.0
-	
+	area_label.text = "%.1f%%" % current_area_percent
+
 	#region cutting
 	last_delta = max(_delta, 0.0001)
 	cut_mode = Input.is_action_pressed("cut_mode") or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
@@ -190,6 +198,15 @@ func _process(_delta: float) -> void:
 		debug = not debug
 		timer_label.visible = debug
 
+	if Input.is_action_just_pressed("delete_cutoff_pointers"):
+		delete_cutoff_pointers = not delete_cutoff_pointers
+
+	if Input.is_action_just_pressed("add_pointer"):
+		_add_pointer()
+
+	if Input.is_action_just_pressed("remove_pointer"):
+		_remove_one_pointer()
+
 func _arrange_themes() -> void:
 	if shape_polygon == null or not is_instance_valid(shape_polygon):
 		return
@@ -212,21 +229,46 @@ func _arrange_themes() -> void:
 #region pointers
 func _spawn_pointers() -> void:
 	for i in pointer_count:
-		var spawn_pos = _random_point_in_polygon(polygon_points)
-		if spawn_pos == null:
-			continue
-			
-		var pointer: CharacterBody2D = POINTER_SCENE.instantiate()
-		pointer.position = spawn_pos
-		pointer.z_index = 3
-		shape_group.add_child(pointer)
-		pointer_nodes.append(pointer)
+		_spawn_one_pointer()
+
+
+func _spawn_one_pointer() -> void:
+	var spawn_pos = _random_point_in_polygon(polygon_points)
+	if spawn_pos == null:
+		return
+
+	var pointer: CharacterBody2D = POINTER_SCENE.instantiate()
+	pointer.position = spawn_pos
+	pointer.z_index = 3
+	shape_group.add_child(pointer)
+	pointer_nodes.append(pointer)
+
+
+func _add_pointer() -> void:
+	pointer_count += 1
+	_spawn_one_pointer()
+
+
+func _remove_one_pointer() -> void:
+	if pointer_nodes.is_empty():
+		return
+	pointer_count = maxi(0, pointer_count - 1)
+	var pointer: CharacterBody2D = pointer_nodes.pop_back()
+	pointer.queue_free()
+
+func _remove_pointers_in_piece(piece_points: PackedVector2Array) -> void:
+	for pointer in pointer_nodes.duplicate():
+		if Geometry2D.is_point_in_polygon(pointer.position, piece_points):
+			pointer_nodes.erase(pointer)
+			pointer.queue_free()
+			pointer_count = maxi(0, pointer_count - 1)
 
 func _remove_pointers_outside(bounds: PackedVector2Array) -> void:
 	for pointer in pointer_nodes.duplicate():
 		if not Geometry2D.is_point_in_polygon(pointer.position, bounds):
 			pointer_nodes.erase(pointer)
 			pointer.queue_free()
+			pointer_count = maxi(0, pointer_count - 1)
 
 func _random_point_in_polygon(bounds: PackedVector2Array) -> Variant:
 	if bounds.is_empty():
@@ -285,11 +327,10 @@ func _handle_mouse_enter_exit(frame_speed: float) -> void:
 		var reject_reason := _check_valid_line(prev_mouse, mouse, polygon_edges, false)
 		last_reject_reason = reject_reason if reject_reason != "" else "line drawn (fast)"
 		if reject_reason == "":
-			
 			if debug:
 				_create_line(prev_mouse, mouse)
-			
-			_perform_cut(prev_mouse, mouse)
+			else:
+				_perform_cut(prev_mouse, mouse)
 		return
 
 	if not cut_mode:
@@ -320,6 +361,8 @@ func _perform_cut(from: Vector2, to: Vector2) -> void:
 	if edge_a == edge_b:
 		return
 
+
+
 	var polygon1_points := _build_piece(cut_a, edge_a, cut_b, edge_b, true)
 	var polygon2_points := _build_piece(cut_a, edge_a, cut_b, edge_b, false)
 
@@ -342,17 +385,30 @@ func _perform_cut(from: Vector2, to: Vector2) -> void:
 		var area1 := _polygon_area(polygon1_points)
 		var area2 := _polygon_area(polygon2_points)
 		keeper = polygon1_points if area1 >= area2 else polygon2_points
+		
 	elif pointers_in_polygon1 and pointers_in_polygon2:
-		# GAME LOST
-		game_lost()
-		return
+		if not delete_cutoff_pointers:
+			game_lost()
+			return
+		var area1 := _polygon_area(polygon1_points)
+		var area2 := _polygon_area(polygon2_points)
+		keeper = polygon1_points if area1 >= area2 else polygon2_points
+
+	_screen_shake()
 
 	polygon_points = keeper
 	polygon_edges = _get_polygon_edges(polygon_points)
 
+	var discarded := polygon2_points if polygon1_points == keeper else polygon1_points
+	if delete_cutoff_pointers:
+		_remove_pointers_in_piece(discarded)
 	_remove_pointers_outside(polygon_points)
 	update_polygon(polygon_sides, polygon_center, polygon_radius, polygon_points)
-	
+
+	current_area = _polygon_area(polygon_points)
+	current_area_percent = (current_area / full_area) * 100.0
+	area_label.text = "%.1f%%" % current_area_percent
+
 	if polygon1_points == keeper:
 		_animate_cut_piece(polygon2_points)
 	else:
@@ -377,17 +433,17 @@ func _animate_cut_piece(cut_piece_points: PackedVector2Array) -> void:
 	cut_piece_tween.set_trans(Tween.TRANS_QUAD)
 	cut_piece_tween.set_parallel(true)
 
-	var screen_size = get_viewport().get_visible_rect().size
+	var half_screen := get_viewport().get_visible_rect().size / 2.0
 
 	var piece_center := Vector2.ZERO
 	for pt in cut_piece_points:
 		piece_center += pt
 	piece_center /= cut_piece_points.size()
 
-	var dist_left = piece_center.x
-	var dist_right = screen_size.x - piece_center.x
-	var dist_top = piece_center.y
-	var dist_bottom = screen_size.y - piece_center.y
+	var dist_left = piece_center.x + half_screen.x
+	var dist_right = half_screen.x - piece_center.x
+	var dist_top = piece_center.y + half_screen.y
+	var dist_bottom = half_screen.y - piece_center.y
 
 	var closest_dist = min(dist_left, dist_right, dist_top, dist_bottom)
 
@@ -465,7 +521,8 @@ func _update_timer_label() -> void:
 		+ "inside: %s\n" % str(inside)
 		+ "speed: %.0f (peak %.0f, min %.0f)\n" % [scalar_mouse_velocity, peak_cut_speed, minimum_cut_speed]
 		+ "last: %s\n" % last_reject_reason
-		+ "area: %s" % current_area_percent
+		+ "area: %s\n" % current_area_percent
+		+ "cmd+3 (delete cut pointers): %s" % str(delete_cutoff_pointers)
 	)
 
 func _create_line(from: Vector2, to: Vector2) -> void:
@@ -481,3 +538,9 @@ func _create_line(from: Vector2, to: Vector2) -> void:
 
 func game_lost() -> void:
 	pass
+
+
+func _screen_shake() -> void:
+	var main := get_parent()
+	if main.has_method("screen_shake"):
+		main.screen_shake()

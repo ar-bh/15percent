@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://bae4i6v88iyrb" path="res://game/start_screen.gd" id="1_66pef"]
 [ext_resource type="Texture2D" uid="uid://bbhkpw782ljwr" path="res://game_assets/startscreen_parallax.png" id="1_86ykt"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_instructions"]
+bg_color = Color(0, 0, 0, 1)
+
 [node name="StartScreen" type="Control" unique_id=1678272508]
 layout_mode = 3
 anchors_preset = 15
@@ -106,14 +109,55 @@ text = "start"
 [node name="Help" type="Button" parent="Menu/ButtonContainer" unique_id=85479717]
 layout_mode = 2
 theme_override_font_sizes/font_size = 80
-text = "options"
+text = "instructions"
 
 [node name="Quit" type="Button" parent="Menu/ButtonContainer" unique_id=328920845]
 layout_mode = 2
 theme_override_font_sizes/font_size = 80
 text = "quit"
 
-[node name="Panel" type="Panel" parent="." unique_id=1855557524]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="InstructionsPanel" type="Panel" parent="Menu" unique_id=901234101]
+visible = false
+z_index = 10
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_instructions")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Menu/InstructionsPanel" unique_id=901234102]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 120.0
+offset_top = 120.0
+offset_right = -120.0
+offset_bottom = -120.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 32
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="Menu/InstructionsPanel/VBoxContainer" unique_id=901234103]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 96
+text = "Instructions"
+horizontal_alignment = 1
+
+[node name="InstructionsLabel" type="Label" parent="Menu/InstructionsPanel/VBoxContainer" unique_id=901234104]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 48
+text = "Hold the mouse down or press E and slide your mouse along the shape to cut it."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="CloseButton" type="Button" parent="Menu/InstructionsPanel/VBoxContainer" unique_id=901234105]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 64
+text = "Back"
