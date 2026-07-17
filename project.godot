@@ -19,6 +19,10 @@ run/main_scene="uid://cxxd6r1ll3gtf"
 config/features=PackedStringArray("4.6")
 config/icon="res://icon_telling_a_story.png"
 
+[autoload]
+
+MouseCursor="*res://game/mouse_cursor.gd"
+
 [display]
 
 window/size/viewport_width=1920

@@ -10,3 +10,4 @@ res://game/gameplay_shapes.tscn
 res://game/main.gd
 res://game/start_screen.tscn
 res://game/start_screen.gd
+res://game/mouse_cursor.gd

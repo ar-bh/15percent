@@ -1,8 +1,8 @@
 res://addons/godot_super-wakatime/api_key_prompt.tscn::a6988a5ba43d5aa92a08f216c1db28db::1782914813::res://.godot/exported/133200997/export-cd8705cb5e2533bd79c64579ac674dae-api_key_prompt.scn
 res://addons/godot_super-wakatime/counter.tscn::7f13ad35960e259f6de719f9785ce249::1782914813::res://.godot/exported/133200997/export-4af6c9115c1c285af5925fa1ce6a526e-counter.scn
-res://game/gameplay_shapes.tscn::8a6ca6db9eebeb0c3244fa480aa47dc7::1784138562::res://.godot/exported/133200997/export-a170cc4ac33ba1037102076bf63a2d85-gameplay_shapes.scn
-res://game/main_gameplay.tscn::78fe9a66b54dc5f15964703ab2c7b5e6::1784138562::res://.godot/exported/133200997/export-bba5d68cc18a25aa112ca8bc5e690a9a-main_gameplay.scn
+res://game/gameplay_shapes.tscn::0e857bedca6921fa44609507085532e0::1784245791::res://.godot/exported/133200997/export-a170cc4ac33ba1037102076bf63a2d85-gameplay_shapes.scn
+res://game/main_gameplay.tscn::568efe6030d149573881623ba55426b3::1784293057::res://.godot/exported/133200997/export-bba5d68cc18a25aa112ca8bc5e690a9a-main_gameplay.scn
 res://game/pointer.tscn::158aaffe1a4138f0028c9736aadbd59b::1784066301::res://.godot/exported/133200997/export-309d47b04852615a70544eba9e08bad0-pointer.scn
 res://game/pointer_test.tscn::e6d783f5033ef427b70a7e2b2e9ce7af::1784062709::res://.godot/exported/133200997/export-7fd59ba33ae6d449d5896128f0138721-pointer_test.scn
 res://game/polygon_test.tscn::594dae7e1a12d8e3337347c040bf01f4::1784061988::res://.godot/exported/133200997/export-4b66e19b671b1817fe71e1bef5c0a3cf-polygon_test.scn
-res://game/start_screen.tscn::215a7a7c80f226edb7bc292379ae14e2::1784140203::res://.godot/exported/133200997/export-5053bfbfc6d27dea2b48aa0292038555-start_screen.scn
+res://game/start_screen.tscn::ba5d60c6fccb4568aa73bc9d488c60a0::1784253362::res://.godot/exported/133200997/export-5053bfbfc6d27dea2b48aa0292038555-start_screen.scn

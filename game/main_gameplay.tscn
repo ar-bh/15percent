@@ -8,7 +8,7 @@
 script = ExtResource("1_8fjku")
 metadata/_edit_horizontal_guides_ = [-753.0]
 
-[node name="BackgroundLayer" type="CanvasLayer" parent="."]
+[node name="BackgroundLayer" type="CanvasLayer" parent="." unique_id=1442549502]
 layer = -1
 
 [node name="Background" type="Control" parent="BackgroundLayer" unique_id=1560236750]
@@ -38,21 +38,83 @@ stretch_mode = 5
 [node name="GameplayShapes" parent="." unique_id=922722316 instance=ExtResource("3_v8vcv")]
 polygon_sides = 6
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="." unique_id=336138697]
 
 [node name="AreaLabel" type="Label" parent="UI" unique_id=901234001]
 anchors_preset = 5
 anchor_left = 0.5
-anchor_top = 0.0
 anchor_right = 0.5
-anchor_bottom = 0.0
-offset_left = -120.0
-offset_top = 24.0
-offset_right = 120.0
-offset_bottom = 88.0
+offset_left = -419.0
+offset_top = 3.0
+offset_right = 419.0
+offset_bottom = 144.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 150
 text = "100%"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="ScorePanel" type="VBoxContainer" parent="UI" unique_id=901234008]
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 320.0
+offset_bottom = 140.0
+theme_override_constants/separation = 8
+
+[node name="LevelLabel" type="Label" parent="UI/ScorePanel" unique_id=901234009]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 48
+text = "Level: 1"
+
+[node name="HighScoreLabel" type="Label" parent="UI/ScorePanel" unique_id=901234010]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 48
+text = "High Score: 0"
+
+[node name="GamePanel" type="Panel" parent="UI" unique_id=618155683]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/GamePanel" unique_id=901234002]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="MessageLabel" type="Label" parent="UI/GamePanel/VBoxContainer" unique_id=319901179]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "You lost"
+horizontal_alignment = 1
+
+[node name="ButtonRow" type="HBoxContainer" parent="UI/GamePanel/VBoxContainer" unique_id=901234003]
+layout_mode = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="RestartButton" type="Button" parent="UI/GamePanel/VBoxContainer/ButtonRow" unique_id=901234004]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "Restart"
+
+[node name="MenuButton" type="Button" parent="UI/GamePanel/VBoxContainer/ButtonRow" unique_id=901234005]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "Main Menu"
+
+[node name="NextButton" type="Button" parent="UI/GamePanel/VBoxContainer/ButtonRow" unique_id=901234006]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "Next"

@@ -7,6 +7,7 @@ extends Node2D
 @onready var gameplay_shapes: Node2D = $GameplayShapes
 
 const BACKGROUND_TEXTURE_SIZE := Vector2(2165, 1080)
+const GAMEPLAY_Y_OFFSET := 64.0
 
 func _ready() -> void:
 	get_tree().root.size_changed.connect(_on_window_resized)
@@ -25,7 +26,7 @@ func _on_window_resized() -> void:
 	var screen_center := viewport_size / 2.0
 
 	camera.position = screen_center
-	gameplay_shapes.position = screen_center
+	gameplay_shapes.position = screen_center + Vector2(0, GAMEPLAY_Y_OFFSET)
 
 	if gameplay_shapes.has_method("on_viewport_resized"):
 		gameplay_shapes.on_viewport_resized()

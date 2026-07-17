@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cxxd6r1ll3gtf"]
 
 [ext_resource type="Script" uid="uid://bae4i6v88iyrb" path="res://game/start_screen.gd" id="1_66pef"]
-[ext_resource type="Texture2D" uid="uid://bbhkpw782ljwr" path="res://game_assets/startscreen_parallax.png" id="1_86ykt"]
+[ext_resource type="Texture2D" uid="uid://dke3dqetuekil" path="res://game_assets/themes/regular_background.png" id="2_grid"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_instructions"]
 bg_color = Color(0, 0, 0, 1)
@@ -25,39 +25,16 @@ grow_vertical = 2
 
 [node name="Parallax2D" type="Parallax2D" parent="Background" unique_id=1769074662]
 scale = Vector2(0.49985036, 0.49985036)
-scroll_offset = Vector2(-15.999999, -2.9999998)
-repeat_size = Vector2(1920, 0)
-autoscroll = Vector2(100, 0)
+scroll_offset = Vector2(2125.9998, 1.9999998)
+repeat_size = Vector2(2165, 1080)
+autoscroll = Vector2(25, 100)
 repeat_times = 4
 
 [node name="TextureRect" type="TextureRect" parent="Background/Parallax2D" unique_id=2125304568]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 1920.0
+offset_right = 2165.0
 offset_bottom = 1080.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("1_86ykt")
-expand_mode = 1
-stretch_mode = 6
-metadata/_edit_use_anchors_ = true
-
-[node name="TextureRect2" type="TextureRect" parent="Background/Parallax2D" unique_id=236432150]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 2340.7007
-offset_top = 970.2904
-offset_right = 4260.7
-offset_bottom = 2050.2905
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(1.1058679, 1.1058679)
-texture = ExtResource("1_86ykt")
-expand_mode = 1
-stretch_mode = 6
-metadata/_edit_use_anchors_ = true
+texture = ExtResource("2_grid")
+stretch_mode = 5
 
 [node name="Menu" type="Control" parent="." unique_id=7244021]
 layout_mode = 1
@@ -83,7 +60,7 @@ grow_vertical = 2
 theme_override_constants/outline_size = 90
 theme_override_font_sizes/normal_font_size = 350
 bbcode_enabled = true
-text = "[center]15%[/center]"
+text = "[center][color=#ed7440]15%[/color][/center]"
 scroll_active = false
 
 [node name="ButtonContainer" type="VBoxContainer" parent="Menu" unique_id=1229546555]
@@ -151,8 +128,7 @@ horizontal_alignment = 1
 [node name="InstructionsLabel" type="Label" parent="Menu/InstructionsPanel/VBoxContainer" unique_id=901234104]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 48
-text = "Hold the mouse down or press E and slide your mouse along the shape to cut it."
+theme_override_font_sizes/font_size = 36
 horizontal_alignment = 1
 autowrap_mode = 3
 
