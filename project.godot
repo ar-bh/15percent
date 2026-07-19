@@ -17,7 +17,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 config/name="15percent"
 run/main_scene="uid://cxxd6r1ll3gtf"
 config/features=PackedStringArray("4.6")
-config/icon="res://icon_telling_a_story.png"
+config/icon="res://icon.png"
 
 [autoload]
 
@@ -27,26 +27,6 @@ MouseCursor="*res://game/mouse_cursor.gd"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-
-[dotnet]
-
-project/assembly_name="M07. Telling a Story"
-
-[editor]
-
-movie_writer/movie_file="/home/xananax/GDQuest/learn-2d-gamedev-godot-4/godot_projects/M07.telling_a_story/demo.avi"
-
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/godot_super-wakatime/plugin.cfg")
-
-[gdpractice]
-
-is_distributed_build=true
-
-[global_group]
-
-pointer=""
 
 [input]
 
